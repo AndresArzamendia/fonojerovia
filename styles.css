@@ -85,22 +85,101 @@ body {
 }
 
 /* Estilos de la barra de navegación */
+/* =========================================
+   NAVBAR CON ESTILO DE CÁPSULAS FLOTANTES
+   ========================================= */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 10%;
+    padding: 1rem 8%;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    /* Fondo translúcido con efecto cristal difuminado */
-    background: rgba(125, 218, 232, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.3));
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    background-color: #5b9db5; /* Tono azul de fondo */
+    box-sizing: border-box;
     z-index: 1000;
+}
+
+/* Cápsula izquierda para el Logo */
+.logo-capsule {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.35rem 1.4rem 0.35rem 0.4rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.logo-capsule:hover {
+    background: rgba(255, 255, 255, 0.45);
+    transform: translateY(-2px);
+}
+
+/* Círculo blanco que contiene la imagen */
+.logo-circle-wrapper {
+    width: 44px;
+    height: 44px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+/* Texto del logo */
+.logo-text {
+    font-family: var(--font-code, monospace);
+    font-weight: 800;
+    color: #123348;
+    font-size: 1.25rem;
+    letter-spacing: 1.5px;
+}
+
+/* Menú de botones tipo cápsula */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-btn {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #123348;
+    text-decoration: none;
+    font-family: var(--font-sans, sans-serif);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.65rem 1.6rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.55);
+    color: #081a26;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .logo {
@@ -1270,3 +1349,4 @@ body {
         transform: scale(1.08);
     }
 }
+
