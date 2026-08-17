@@ -13,7 +13,27 @@
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+<script>
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader-wrapper');
+        if (loader) {
+            setTimeout(() => {
+                loader.classList.add('loader-hidden');
+            }, 300); // Pequeña pausa para asegurar una transición fluida
+        }
+    });
+</script>
 <body>
+    <!-- Loader Dinámico Jerovia -->
+<div id="loader-wrapper">
+    <div class="loader-content">
+        <div class="loader-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-core">J</div>
+        </div>
+        <p class="loader-text">Cargando...</p>
+    </div>
+</div>
 
 <!-- Figuras geométricas distribuidas sin huecos en todo el scroll -->
 <div class="shapes-container">
