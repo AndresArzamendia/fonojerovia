@@ -20,36 +20,36 @@
     scroll-behavior: smooth; /* Hace que el desplazamiento al hacer clic en el menú sea suave */
 }
 
-/*Contenedor mas texto*/
-.logo-container{
+/* Logo e ícono circular con animación */
+.logo-container {
     display: flex;
-    align-items: center; /*alinea verticalmente en e cnetro el icono y el texto*/
-    gap: 0.75rem; /*espacio de separacion entre el circulo y el texto*/
+    align-items: center;
+    gap: 0.75rem;
     text-decoration: none;
 }   
 
-/*Estilo del logo cicular*/
-.logo-img{
-    width: 42px; /*Ancho del circulo*/
-    height: 42px; /* Alto del circulo*/
-    border-radius: 50%; /* Vuelva la imagen perfectamente circular*/
-    object-fit: cover; /* Evita que el logo deforme dentro del ciruclo*/
-    border: 2px solid #ffffff; /*Borde blanco de separacion*/
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra elegante*/
-    transition: transform 0.3s ease;
+.logo-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
 }
 
 /* efecto al apsar el mouse por encima del logo*/
-.logo-container:hover .logo-img{
-    transform: scale(1.08) rotate(5deg); /* ligero giro y aumento de tamanho*/
+.logo-container:hover .logo-img {
+    transform: scale(1.1) rotate(6deg);
+    box-shadow: 0 6px 16px rgba(30, 67, 99, 0.25);
 }
 
 /*estilo del texto jerovia*/
-.logo-text{
-    font-family: var(--font-code);
+.logo-text {
+    font-family: var(--font-code, monospace);
     font-weight: 800;
-    color: var(--accent-dark); /*color azul obscuro institucional*/
-    font-size: 1.25rem;
+    color: var(--accent-dark, #1E4363);
+    font-size: 1.3rem;
     letter-spacing: 1.5px;
 }
 /* Estilos aplicados a todo el cuerpo de la página web */
@@ -86,17 +86,21 @@ body {
 
 /* Estilos de la barra de navegación */
 .navbar {
-    display: flex; /* Flexbox: alineación flexible de elementos */
-    justify-content: space-between; /* Pone el logo a la izquierda y menú a la derecha */
-    align-items: center; /* Alinea los elementos verticalmente al centro */
-    padding: 1.2rem 10%;
-    position: fixed; /* Se mantiene pegado arriba de la pantalla */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 10%;
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    backdrop-filter: blur(10px); /* EFECTO CRISTAL: Difumina lo que pasa por detrás de la barra */
+    /* Fondo translúcido con efecto cristal difuminado */
     background: rgba(125, 218, 232, 0.85);
-    border-bottom: 1px solid var(--border-color);
-    z-index: 100; /* Asegura que la barra siempre esté por encima del contenido */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.3));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
 }
 
 .logo {
@@ -107,27 +111,43 @@ body {
     letter-spacing: 1px;
 }
 
+/* Enlaces del menú y animaciones hover */
 .nav-links {
-    color: var(--text-main);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s;
     display: flex;
-    list-style: none; /* Quita los puntos negros por defecto de la lista */
-    gap: 4rem; /* Separación horizontal entre cada enlace */
+    list-style: none;
+    gap: 2.5rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
-    color: var(--text-main);
-    text-decoration: none; /* Quita el subrayado feo de las ligas */
-    transition: color 0.3s; /* Transición suave de 0.3 segundos al cambiar de color */
+    position: relative;
+    color: var(--accent-dark, #1E4363);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 0.4rem 0;
+    transition: color 0.3s ease;
 }
 
+/* Animación de subrayado expansivo desde el centro */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0%;
+    height: 3px;
+    background-color: var(--accent-dark, #1E4363);
+    border-radius: 2px;
+    transition: width 0.3s ease, left 0.3s ease;
+}
 /* ':hover' se activa cuando pasas el puntero del mouse por encima del elemento */
-.nav-links a:hover {
-    color: var(--accent-color);
+.nav-links a:hover::after {
+    width: 100%;
+    left: 0%;
 }
-
 /* Estilos para las Secciones */
 .section {
     padding: 6rem 10%;
