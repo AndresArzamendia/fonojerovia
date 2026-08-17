@@ -138,7 +138,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr; /* divide exactamente 50 50*/
     align-items: center;
-    padding: 0 10%;
+    padding: 2rem 10% 0 10%;
     gap: 3rem;
 }
 .hero-left{
@@ -1043,5 +1043,115 @@ footer {
     .btn {
         width: 100%;
         justify-content: center;
+    }
+}
+
+/* Asegurar que el body permita posicionar elementos a todo lo largo */
+body {
+    position: relative;
+}
+
+/* Contenedor que cubre la altura total del sitio */
+.shapes-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* Estilos base de las figuras */
+.shape {
+    position: absolute;
+    opacity: 0.45;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.06));
+    animation: floatAnimation 11s infinite ease-in-out alternate;
+}
+
+.shape-circle {
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFB6C1 0%, #FFD1DC 100%);
+}
+
+.shape-square {
+    border-radius: 16px;
+    background: linear-gradient(135deg, #A8E6CF 0%, #DCEDC1 100%);
+}
+
+.shape-star {
+    color: #FFD3B6;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 4px 10px rgba(255, 170, 165, 0.35);
+}
+
+.shape-triangle {
+    width: 0;
+    height: 0;
+    border-left: 28px solid transparent;
+    border-right: 28px solid transparent;
+    border-bottom: 50px solid #FFAAA5;
+    border-radius: 6px;
+}
+
+/* Distribución vertical continua (sin espacios vacíos) */
+/* --- Tramo 1 (0% a 20%) --- */
+.s1 { width: 75px; height: 75px; top: 2%; left: 4%; animation-duration: 9s; }
+.s2 { width: 60px; height: 60px; top: 6%; left: 88%; animation-duration: 12s; animation-delay: -2s; }
+.s3 { top: 10%; left: 45%; animation-duration: 8s; animation-delay: -1s; }
+.s4 { width: 90px; height: 90px; top: 14%; left: 10%; animation-duration: 14s; animation-delay: -3s; }
+.s5 { top: 17%; left: 78%; animation-duration: 11s; animation-delay: -4s; }
+.s6 { top: 21%; left: 25%; animation-duration: 9s; animation-delay: -2s; }
+
+/* --- Tramo 2 (20% a 40%) --- */
+.s7 { width: 55px; height: 55px; top: 25%; left: 90%; animation-duration: 10s; animation-delay: -5s; }
+.s8 { width: 80px; height: 80px; top: 29%; left: 6%; animation-duration: 11s; animation-delay: -1s; }
+.s9 { top: 33%; left: 60%; animation-duration: 10s; animation-delay: -3s; }
+.s10 { top: 37%; left: 18%; animation-duration: 9s; animation-delay: -2s; }
+.s11 { width: 65px; height: 65px; top: 41%; left: 82%; animation-duration: 13s; animation-delay: -4s; }
+.s12 { width: 85px; height: 85px; top: 45%; left: 38%; animation-duration: 12s; animation-delay: -1.5s; }
+
+/* --- Tramo 3 (40% a 60%) --- */
+.s13 { top: 49%; left: 8%; animation-duration: 10s; animation-delay: -2s; }
+.s14 { top: 53%; left: 75%; animation-duration: 11s; animation-delay: -3.5s; }
+.s15 { width: 70px; height: 70px; top: 57%; left: 22%; animation-duration: 9s; animation-delay: -1s; }
+.s16 { width: 60px; height: 60px; top: 61%; left: 88%; animation-duration: 13s; animation-delay: -2.5s; }
+.s17 { top: 65%; left: 50%; animation-duration: 8s; animation-delay: -4s; }
+.s18 { width: 95px; height: 95px; top: 69%; left: 5%; animation-duration: 12s; animation-delay: -1s; }
+
+/* --- Tramo 4 (60% a 80%) --- */
+.s19 { top: 73%; left: 82%; animation-duration: 10s; animation-delay: -2s; }
+.s20 { width: 70px; height: 70px; top: 77%; left: 15%; animation-duration: 14s; animation-delay: -3s; }
+.s21 { top: 81%; left: 65%; animation-duration: 9s; animation-delay: -1s; }
+.s22 { width: 80px; height: 80px; top: 85%; left: 30%; animation-duration: 11s; animation-delay: -4s; }
+.s23 { top: 88%; left: 91%; animation-duration: 12s; animation-delay: -2s; }
+.s24 { width: 60px; height: 60px; top: 91%; left: 8%; animation-duration: 10s; animation-delay: -3.5s; }
+
+/* --- Tramo 5 (80% a 100%) --- */
+.s25 { top: 93%; left: 52%; animation-duration: 9s; animation-delay: -1s; }
+.s26 { width: 85px; height: 85px; top: 95%; left: 80%; animation-duration: 13s; animation-delay: -2s; }
+.s27 { width: 65px; height: 65px; top: 97%; left: 20%; animation-duration: 11s; animation-delay: -4s; }
+.s28 { top: 98%; left: 68%; animation-duration: 10s; animation-delay: -1.5s; }
+.s29 { top: 99%; left: 4%; animation-duration: 8s; animation-delay: -3s; }
+.s30 { width: 75px; height: 75px; top: 99.5%; left: 42%; animation-duration: 12s; animation-delay: -2s; }
+
+/* Movimiento suave de flotado */
+@keyframes floatAnimation {
+    0% {
+        transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
+    }
+    33% {
+        transform: translateY(-28px) translateX(14px) rotate(120deg) scale(1.06);
+    }
+    66% {
+        transform: translateY(-12px) translateX(-18px) rotate(240deg) scale(0.96);
+    }
+    100% {
+        transform: translateY(22px) translateX(10px) rotate(360deg) scale(1.04);
     }
 }
