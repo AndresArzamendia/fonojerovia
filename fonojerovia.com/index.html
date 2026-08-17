@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerovia</title>
+    <!-- Fuentes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@600;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Figuras geométricas distribuidas sin huecos en todo el scroll -->
+<div class="shapes-container">
+    <!-- Seccion 1 (0% - 20% Scroll) -->
+    <div class="shape shape-circle s1"></div>
+    <div class="shape shape-square s2"></div>
+    <div class="shape shape-star s3">★</div>
+    <div class="shape shape-circle s4"></div>
+    <div class="shape shape-triangle s5"></div>
+    <div class="shape shape-star s6">✦</div>
+
+    <!-- Seccion 2 (20% - 40% Scroll) -->
+    <div class="shape shape-square s7"></div>
+    <div class="shape shape-circle s8"></div>
+    <div class="shape shape-triangle s9"></div>
+    <div class="shape shape-star s10">★</div>
+    <div class="shape shape-square s11"></div>
+    <div class="shape shape-circle s12"></div>
+
+    <!-- Seccion 3 (40% - 60% Scroll) -->
+    <div class="shape shape-star s13">✦</div>
+    <div class="shape shape-triangle s14"></div>
+    <div class="shape shape-circle s15"></div>
+    <div class="shape shape-square s16"></div>
+    <div class="shape shape-star s17">★</div>
+    <div class="shape shape-circle s18"></div>
+
+    <!-- Seccion 4 (60% - 80% Scroll) -->
+    <div class="shape shape-triangle s19"></div>
+    <div class="shape shape-square s20"></div>
+    <div class="shape shape-star s21">✦</div>
+    <div class="shape shape-circle s22"></div>
+    <div class="shape shape-triangle s23"></div>
+    <div class="shape shape-square s24"></div>
+
+    <!-- Seccion 5 (80% - 100% Scroll) -->
+    <div class="shape shape-star s25">★</div>
+    <div class="shape shape-circle s26"></div>
+    <div class="shape shape-square s27"></div>
+    <div class="shape shape-triangle s28"></div>
+    <div class="shape shape-star s29">✦</div>
+    <div class="shape shape-circle s30"></div>
+</div>
+    <!-- Fondo brillante -->
+    <div class="bg-glow"></div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <a href="#" class="logo-container">
+            <img src="logo-blanco.ico" alt="Logo Jerovia" class="logo-img">
+            <span class="logo-text">JEROVIA</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#sobre-mi">Sobre Mí</a></li>
+            <li><a href="#experiencia">Experiencia</a></li>
+            <li><a href="#opiniones">Opiniones</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sección Principal (Hero) -->
+    <section class="hero section-anim">
+        <div class="hero-left">
+            <span class="badge">Consultorio Fonoaudilogico</span>
+            <h1>Fonoaudiloga <span class="highlight">Paola Torres</span></h1>
+            <p class="subtitle">Brindamos un espacio seguro y profesional para el desarrollo y bienestar personal.</p>
+            <div class="hero-buttons">
+                <a href="#opiniones" class="btn btn-primary">Ver Reseñas</a>
+                <a href="#sobre-mi" class="btn btn-secondary">Conocer Más</a>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="photo-card main-card">
+                <img src="paola.jpeg" alt="Foto principal">
+            </div>
+            <div class="photo-card sub-card">
+                <img src="local.jpeg" alt="Foto secundaria">
+            </div>
+            <div class="badge-card">
+                Solo basta confiar, lo escencial es invisible...
+        </div>
+    </section>
+
+    <!-- Sección de Opiniones y Carrusel -->
+    <section id="opiniones" class="section section-anim">
+        <h2 class="section-title">
+            <i data-lucide="message-square"></i> Lo que dicen las familias
+        </h2>
+
+        <!-- Resumen de Calificación -->
+        <div class="reviews-summary">
+            <div class="rating-box">
+                <div class="rating-number">5.0</div>
+                <div class="rating-details">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-count">Basado en opiniones reales</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario para agregar opinión -->
+        <div class="add-review-box">
+            <h3>Deja tu testimonio</h3>
+            <form id="commentForm">
+                <input type="text" id="parentName" placeholder="Tu nombre o el de la familia" required>
+                
+                <div class="form-row-selects">
+                    <select id="authorRole" required>
+                        <option value="Mamá">Mamá</option>
+                        <option value="Papá">Papá</option>
+                        <option value="Tutor">Tutor</option>
+                    </select>
+
+                    <select id="ratingSelect" required>
+                        <option value="5">★★★★★ (5 estrellas)</option>
+                        <option value="4">★★★★☆ (4 estrellas)</option>
+                        <option value="3">★★★☆☆ (3 estrellas)</option>
+                    </select>
+                </div>
+
+                <textarea id="commentText" placeholder="Escribe aquí tu comentario..." required></textarea>
+                <button type="submit">Publicar opinión</button>
+            </form>
+        </div>
+
+        <!-- Carrusel de Reseñas Infinito -->
+        <div class="reviews-carousel-wrapper">
+            
+            <!-- Controles centrados e independientes del difuminado -->
+            <div class="ticker-controls">
+                <button id="tickerPrev" class="ctrl-btn" aria-label="Anterior">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <button id="tickerNext" class="ctrl-btn" aria-label="Siguiente">
+                    <i data-lucide="chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Contenedor del Ticker -->
+            <div id="tickerContainer" class="ticker-container">
+                <div id="tickerTrack" class="ticker-track">
+                    
+                    <!-- Grupo 1 -->
+                    <div class="ticker-group">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar">M</div>
+                                <div>
+                                    <h4>María Giménez</h4>
+                                    <span class="review-date">Mamá de un paciente</span>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                            <p>"Excelente atención y calidez profesional. El avance ha sido increíble."</p>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar">C</div>
+                                <div>
+                                    <h4>Carlos Benítez</h4>
+                                    <span class="review-date">Papá</span>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                            <p>"Muy agradecido por el acompañamiento y la dedicación en cada consulta."</p>
+                        </div>
+                    </div>
+
+                    <!-- Grupo 2 (Clonado para el bucle infinito) -->
+                    <div class="ticker-group">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar">M</div>
+                                <div>
+                                    <h4>María Giménez</h4>
+                                    <span class="review-date">Mamá de un paciente</span>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                            <p>"Excelente atención y calidez profesional. El avance ha sido increíble."</p>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar">C</div>
+                                <div>
+                                    <h4>Carlos Benítez</h4>
+                                    <span class="review-date">Papá</span>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                            <p>"Muy agradecido por el acompañamiento y la dedicación en cada consulta."</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+<!-- Botón flotante de WhatsApp -->
+<a href="https://wa.me/595976220370" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+</a>
+
+    <!-- Script de lógica -->
+    <script src="script.js"></script>
+</body>
+</html>>>>>>
