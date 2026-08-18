@@ -1,0 +1,122 @@
+{
+  "personal": {
+    "name": "Paola Torres",
+    "title": "Fonoaudiloga",
+    "subtitle": "Consultorio Fonoaudiológico Jerovia",
+    "bio": "Soy una profesional apasionada por el desarrollo infantil y la salud auditiva. Con años de experiencia en fonoaudiología, me dedico a brindar un espacio seguro, cálido y profesional donde cada niño y familia puede alcanzar su máximo potencial. Mi enfoque se basa en la confianza, la paciencia y el amor por lo que hago.",
+    "phone": "+595 976 220 370",
+    "email": "paola@jerovia.com",
+    "address": "Asunción, Paraguay",
+    "whatsapp": "595976220370",
+    "badge": "Consultorio Fonoaudilogico",
+    "quote": "Solo basta confiar, lo escencial es invisible..."
+  },
+  "education": [
+    {
+      "id": 1,
+      "institution": "Universidad Nacional de Asunción",
+      "degree": "Licenciatura en Fonoaudiología",
+      "year": "2018",
+      "description": "Formación completa en diagnóstico y tratamiento de trastornos de la comunicación, audición, voz, lenguaje y habla."
+    },
+    {
+      "id": 2,
+      "institution": "Instituto de Fonoaudiología Infantil",
+      "degree": "Especialización en Fonoaudiología Pediátrica",
+      "year": "2020",
+      "description": "Especialización enfocada en el abordaje terapéutico de niños con trastornos del desarrollo del lenguaje y comunicación."
+    }
+  ],
+  "experience": [
+    {
+      "id": 1,
+      "company": "Consultorio Jerovia",
+      "role": "Fonoaudiloga / Propietaria",
+      "period": "2020 - Presente",
+      "description": "Dirección y atención del consultorio fonoaudiológico propio. Evaluación, diagnóstico y tratamiento de pacientes pediátricos y adultos. Especialización en trastornos del lenguaje, habla, voz y audición."
+    },
+    {
+      "id": 2,
+      "company": "Centro de Desarrollo Infantil",
+      "role": "Fonoaudiloga Infantil",
+      "period": "2018 - 2020",
+      "description": "Atención de pacientes pediátricos con trastornos del neurodesarrollo, implementación de terapias de estimulación temprana y acompañamiento familiar."
+    }
+  ],
+  "certifications": [
+    {
+      "id": 1,
+      "name": "Certificación en Terapia Miofuncional",
+      "institution": "Colegio de Fonoaudilogos del Paraguay",
+      "year": "2021",
+      "image": ""
+    },
+    {
+      "id": 2,
+      "name": "Curso de Intervención en Trastorno del Espectro Autista",
+      "institution": "Fundación TEA Paraguay",
+      "year": "2022",
+      "image": ""
+    },
+    {
+      "id": 3,
+      "name": "Diplomado en Neurorehabilitación Infantil",
+      "institution": "Universidad Católica de Asunción",
+      "year": "2023",
+      "image": ""
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "title": "Terapia de Lenguaje",
+      "description": "Tratamiento de dificultades en la expresión y comprensión del lenguaje oral en niños y adultos.",
+      "icon": "message-circle"
+    },
+    {
+      "id": 2,
+      "title": "Terapia de Habla",
+      "description": "Intervención en trastornos como tartamudeo, dislalias y otros problemas de articulación.",
+      "icon": "volume-2"
+    },
+    {
+      "id": 3,
+      "title": "Evaluación Auditiva",
+      "description": "Evaluación completa de la audición para la detección temprana de pérdidas auditivas.",
+      "icon": "ear"
+    },
+    {
+      "id": 4,
+      "title": "Terapia de Voz",
+      "description": "Tratamiento de disfonías, nódulos y otros trastornos de la voz.",
+      "icon": "mic"
+    },
+    {
+      "id": 5,
+      "title": "Estimulación Temprana",
+      "description": "Programas de estimulación del desarrollo comunicativo en bebés y niños pequeños.",
+      "icon": "baby"
+    },
+    {
+      "id": 6,
+      "title": "Orientación Familiar",
+      "description": "Orientación y acompañamiento a familias para el acompañamiento en el hogar.",
+      "icon": "heart"
+    }
+  ],
+  "gallery": [],
+  "testimonials": [
+    {
+      "name": "María Giménez",
+      "role": "Mamá",
+      "rating": 5,
+      "text": "Excelente atención y calidez profesional. El avance ha sido increíble."
+    },
+    {
+      "name": "Carlos Benítez",
+      "role": "Papá",
+      "rating": 5,
+      "text": "Muy agradecido por el acompañamiento y la dedicación en cada consulta."
+    }
+  ]
+}

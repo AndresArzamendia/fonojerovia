@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Jerovia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@600;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="logo-blanco.ico">
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="login-logo-circle">J</div>
+                <h2>Panel Admin</h2>
+                <p>Jerovia - Fonoaudiologia</p>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i data-lucide="lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Contrasena" required>
+                </div>
+                <button type="submit" class="login-btn">Ingresar</button>
+                <p class="login-hint" id="loginError"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="sidebar-logo-circle">J</span>
+                    <span class="sidebar-brand">JEROVIA</span>
+                </div>
+                <button class="sidebar-close" id="sidebarClose"><i data-lucide="x"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="sec-personal">
+                    <i data-lucide="user"></i><span>Datos Personales</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-photo">
+                    <i data-lucide="camera"></i><span>Foto Principal</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-education">
+                    <i data-lucide="graduation-cap"></i><span>Formacion</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-experience">
+                    <i data-lucide="briefcase"></i><span>Experiencia</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-certifications">
+                    <i data-lucide="award"></i><span>Certificaciones</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-services">
+                    <i data-lucide="stethoscope"></i><span>Servicios</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-gallery">
+                    <i data-lucide="image"></i><span>Galeria</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-testimonials">
+                    <i data-lucide="message-square"></i><span>Testimonios</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-settings">
+                    <i data-lucide="settings"></i><span>Configuracion</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" class="nav-item"><i data-lucide="external-link"></i><span>Ver Pagina</span></a>
+                <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out"></i><span>Cerrar Sesion</span></a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="topbar">
+                <button class="menu-toggle" id="menuToggle"><i data-lucide="menu"></i></button>
+                <h1 class="topbar-title" id="topbarTitle">Datos Personales</h1>
+                <div class="topbar-actions">
+                    <button class="btn-save" id="saveAllBtn"><i data-lucide="save"></i> Guardar Cambios</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+
+                <!-- PERSONAL DATA -->
+                <section class="admin-section active" id="sec-personal">
+                    <div class="section-header">
+                        <h2>Datos Personales</h2>
+                        <p>Informacion basica del perfil profesional</p>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="field-name" placeholder="Paola Torres">
+                        </div>
+                        <div class="form-group">
+                            <label>Titulo Profesional</label>
+                            <input type="text" id="field-title" placeholder="Fonoaudiloga">
+                        </div>
+                        <div class="form-group">
+                            <label>Subtitulo / Especialidad</label>
+                            <input type="text" id="field-subtitle" placeholder="Consultorio Fonoaudiologico">
+                        </div>
+                        <div class="form-group">
+                            <label>Frase destacada (Badge)</label>
+                            <input type="text" id="field-badge" placeholder="Consultorio Fonoaudilogico">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Frase motivacional</label>
+                            <input type="text" id="field-quote" placeholder="Solo basta confiar...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Biografia / Sobre ti</label>
+                            <textarea id="field-bio" rows="4" placeholder="Cuentanos sobre ti..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <input type="text" id="field-phone" placeholder="+595 976 220 370">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="field-email" placeholder="paola@jerovia.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Direccion</label>
+                            <input type="text" id="field-address" placeholder="Asuncion, Paraguay">
+                        </div>
+                        <div class="form-group">
+                            <label>Numero WhatsApp (con codigo)</label>
+                            <input type="text" id="field-whatsapp" placeholder="595976220370">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PHOTO -->
+                <section class="admin-section" id="sec-photo">
+                    <div class="section-header">
+                        <h2>Foto Principal</h2>
+                        <p>Imagen de perfil que se muestra en el hero</p>
+                    </div>
+                    <div class="photo-upload-area">
+                        <div class="current-photo" id="currentPhotoPreview">
+                            <img src="paola.jpeg" alt="Foto actual" id="previewImg">
+                        </div>
+                        <div class="upload-controls">
+                            <label class="upload-btn" for="photoInput">
+                                <i data-lucide="upload"></i> Seleccionar imagen
+                            </label>
+                            <input type="file" id="photoInput" accept="image/*" class="hidden-input">
+                            <p class="upload-hint">Formatos: JPG, PNG, WebP. Maximo 2MB recomendado.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EDUCATION -->
+                <section class="admin-section" id="sec-education">
+                    <div class="section-header">
+                        <h2>Formacion Academica</h2>
+                        <p>Agrega, edita o elimina estudios</p>
+                    </div>
+                    <div id="educationList" class="items-list"></div>
+                    <button class="add-item-btn" id="addEducationBtn">
+                        <i data-lucide="plus-circle"></i> Agregar formacion
+                    </button>
+                </section>
+
+                <!-- EXPERIENCE -->
+                <section class="admin-section" id="sec-experience">
+                    <div class="section-header">
+                        <h2>Experiencia Laboral</h2>
+                        <p>Gestiona tu trayectoria profesional</p>
+                    </div>
+                    <div id="experienceList" class="items-list"></div>
+                    <button class="add-item-btn" id="addExperienceBtn">
+                        <i data-lucide="plus-circle"></i> Agregar experiencia
+                    </button>
+                </section>
+
+                <!-- CERTIFICATIONS -->
+                <section class="admin-section" id="sec-certifications">
+                    <div class="section-header">
+                        <h2>Certificaciones y Cursos</h2>
+                        <p>Diplomas, certificados y capacitaciones</p>
+                    </div>
+                    <div id="certList" class="items-list"></div>
+                    <button class="add-item-btn" id="addCertBtn">
+                        <i data-lucide="plus-circle"></i> Agregar certificacion
+                    </button>
+                </section>
+
+                <!-- SERVICES -->
+                <section class="admin-section" id="sec-services">
+                    <div class="section-header">
+                        <h2>Servicios</h2>
+                        <p>Servicios que ofreces en el consultorio</p>
+                    </div>
+                    <div id="servicesList" class="items-list"></div>
+                    <button class="add-item-btn" id="addServiceBtn">
+                        <i data-lucide="plus-circle"></i> Agregar servicio
+                    </button>
+                </section>
+
+                <!-- GALLERY -->
+                <section class="admin-section" id="sec-gallery">
+                    <div class="section-header">
+                        <h2>Galeria de Fotos</h2>
+                        <p>Fotos del consultorio y equipo</p>
+                    </div>
+                    <div class="gallery-upload-area">
+                        <label class="upload-btn wide" for="galleryInput">
+                            <i data-lucide="image-plus"></i> Agregar fotos a la galeria
+                        </label>
+                        <input type="file" id="galleryInput" accept="image/*" multiple class="hidden-input">
+                    </div>
+                    <div id="galleryList" class="gallery-admin-grid"></div>
+                </section>
+
+                <!-- TESTIMONIALS -->
+                <section class="admin-section" id="sec-testimonials">
+                    <div class="section-header">
+                        <h2>Testimonios</h2>
+                        <p>Gestiona las opiniones de las familias</p>
+                    </div>
+                    <div id="testimonialsList" class="items-list"></div>
+                    <button class="add-item-btn" id="addTestimonialBtn">
+                        <i data-lucide="plus-circle"></i> Agregar testimonio
+                    </button>
+                </section>
+
+                <!-- SETTINGS -->
+                <section class="admin-section" id="sec-settings">
+                    <div class="section-header">
+                        <h2>Configuracion</h2>
+                        <p>Cambiar contrasena y gestionar datos</p>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3><i data-lucide="key"></i> Cambiar Contrasena</h3>
+                            <form id="changePasswordForm">
+                                <div class="form-group">
+                                    <label>Contrasena actual</label>
+                                    <input type="password" id="currentPass" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nueva contrasena</label>
+                                    <input type="password" id="newPass" required minlength="4">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirmar nueva contrasena</label>
+                                    <input type="password" id="confirmPass" required>
+                                </div>
+                                <button type="submit" class="login-btn">Actualizar Contrasena</button>
+                            </form>
+                        </div>
+                        <div class="settings-card">
+                            <h3><i data-lucide="database"></i> Gestionar Datos</h3>
+                            <p>Restablecer todos los datos a los valores por defecto.</p>
+                            <button class="danger-btn" id="resetDataBtn">
+                                <i data-lucide="rotate-ccw"></i> Restablecer datos
+                            </button>
+                            <p class="settings-hint">Esto no se puede deshacer. Se perderan todos los cambios.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Agregar</h3>
+                <button class="modal-close" id="modalClose"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="modalCancel">Cancelar</button>
+                <button class="btn-confirm" id="modalConfirm">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast-admin"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
