@@ -207,11 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="review-avatar">${initial}</div>
                         <div>
                             <h4>${t.name}</h4>
-                            <span class="review-date">${t.role}</span>
+                            <span class="review-date"><i data-lucide="user" style="width:12px;height:12px;"></i> ${t.role}</span>
                         </div>
                     </div>
                     <div class="stars">${stars}</div>
-                    <p>"${t.text}"</p>
+                    <p>${t.text}</p>
                 </div>
             `;
         };
@@ -230,6 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="ticker-group">${group1}</div>
             <div class="ticker-group">${group2}</div>
         `;
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function setText(id, text) {
