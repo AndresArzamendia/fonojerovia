@@ -76,8 +76,31 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error loading data.json:', e);
         }
 
+        let cloudData = null;
+        if (sb_client) {
+            try {
+                const { data, error } = await sb_client
+                    .from('site_config')
+                    .select('payload')
+                    .eq('id', 'main')
+                    .single();
+                if (!error && data && data.payload) {
+                    cloudData = data.payload;
+                }
+            } catch (e) {
+                console.warn('Supabase no disponible, usando localStorage:', e);
+            }
+        }
+
         const saved = localStorage.getItem('jerovia_data');
-        if (saved && defaults) {
+
+        if (cloudData && defaults) {
+            siteData = deepMerge(defaults, cloudData);
+            saveData();
+        } else if (cloudData) {
+            siteData = cloudData;
+            saveData();
+        } else if (saved && defaults) {
             const savedData = JSON.parse(saved);
             siteData = deepMerge(defaults, savedData);
             saveData();
@@ -95,6 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveData() {
         localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        if (sb_client) {
+            sb_client.from('site_config').upsert(
+                { id: 'main', payload: siteData, updated_at: new Date().toISOString() },
+                { onConflict: 'id' }
+            ).catch(e => console.warn('Error guardando en Supabase:', e));
+        }
     }
 
     // =========================================
@@ -597,6 +626,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirm('Seguro que quieres restablecer todos los datos? Esto no se puede deshacer.')) return;
         localStorage.removeItem('jerovia_data');
         localStorage.removeItem('jerovia_reviews');
+        if (sb_client) {
+            sb_client.from('site_config').delete().in('id', ['main', 'reviews']).catch(() => {});
+        }
         showToast('Datos restablecidos. Recarga la pagina.', 'success');
         setTimeout(() => location.reload(), 1500);
     });

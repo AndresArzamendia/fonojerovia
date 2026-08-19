@@ -78,8 +78,31 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error loading data.json:', e);
         }
 
+        let cloudData = null;
+        if (sb_client) {
+            try {
+                const { data, error } = await sb_client
+                    .from('site_config')
+                    .select('payload')
+                    .eq('id', 'main')
+                    .single();
+                if (!error && data && data.payload) {
+                    cloudData = data.payload;
+                }
+            } catch (e) {
+                console.warn('Supabase no disponible, usando localStorage:', e);
+            }
+        }
+
         const saved = localStorage.getItem('jerovia_data');
-        if (saved && defaults) {
+
+        if (cloudData && defaults) {
+            siteData = deepMerge(defaults, cloudData);
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        } else if (cloudData) {
+            siteData = cloudData;
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        } else if (saved && defaults) {
             const savedData = JSON.parse(saved);
             siteData = deepMerge(defaults, savedData);
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
@@ -89,7 +112,25 @@ document.addEventListener('DOMContentLoaded', () => {
             siteData = defaults;
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         }
+
         renderAll();
+
+        if (cloudData && sb_client) {
+            syncReviewsFromCloud();
+        }
+    }
+
+    async function syncReviewsFromCloud() {
+        try {
+            const { data, error } = await sb_client
+                .from('site_config')
+                .select('payload')
+                .eq('id', 'reviews')
+                .single();
+            if (!error && data && data.payload) {
+                localStorage.setItem('jerovia_reviews', JSON.stringify(data.payload));
+            }
+        } catch (e) {}
     }
 
     function renderAll() {
@@ -327,6 +368,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (siteData) {
                 if (!siteData.testimonials) siteData.testimonials = [];
                 siteData.testimonials.push(newReview);
+            }
+
+            if (sb_client) {
+                sb_client.from('site_config').upsert(
+                    { id: 'reviews', payload: saved, updated_at: new Date().toISOString() },
+                    { onConflict: 'id' }
+                ).catch(() => {});
             }
 
             renderTestimonials();
