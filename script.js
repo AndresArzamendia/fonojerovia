@@ -78,29 +78,36 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error loading data.json:', e);
         }
 
-        let cloudData = null;
-        if (sb_client) {
-            try {
-                const { data, error } = await sb_client
-                    .from('site_config')
-                    .select('payload')
-                    .eq('id', 'main')
-                    .single();
-                if (!error && data && data.payload) {
-                    cloudData = data.payload;
-                }
-            } catch (e) {
-                console.warn('Supabase no disponible, usando localStorage:', e);
-            }
-        }
+        const cloudResult = await sbLoad('main');
+        const cloudData = cloudResult.ok ? cloudResult.data : null;
 
         const saved = localStorage.getItem('jerovia_data');
 
         if (cloudData && defaults) {
             siteData = deepMerge(defaults, cloudData);
+            if (saved) {
+                const local = JSON.parse(saved);
+                if (local.personal && local.personal.photo) {
+                    if (!siteData.personal) siteData.personal = {};
+                    siteData.personal.photo = local.personal.photo;
+                }
+                if (local.gallery && local.gallery.length > 0 && (!siteData.gallery || siteData.gallery.length === 0)) {
+                    siteData.gallery = local.gallery;
+                }
+            }
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         } else if (cloudData) {
             siteData = cloudData;
+            if (saved) {
+                const local = JSON.parse(saved);
+                if (local.personal && local.personal.photo) {
+                    if (!siteData.personal) siteData.personal = {};
+                    siteData.personal.photo = local.personal.photo;
+                }
+                if (local.gallery && local.gallery.length > 0) {
+                    siteData.gallery = local.gallery;
+                }
+            }
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         } else if (saved && defaults) {
             const savedData = JSON.parse(saved);
@@ -114,23 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         renderAll();
-
-        if (cloudData && sb_client) {
-            syncReviewsFromCloud();
-        }
+        syncReviewsFromCloud();
     }
 
     async function syncReviewsFromCloud() {
-        try {
-            const { data, error } = await sb_client
-                .from('site_config')
-                .select('payload')
-                .eq('id', 'reviews')
-                .single();
-            if (!error && data && data.payload) {
-                localStorage.setItem('jerovia_reviews', JSON.stringify(data.payload));
-            }
-        } catch (e) {}
+        const result = await sbLoad('reviews');
+        if (result.ok && result.data) {
+            localStorage.setItem('jerovia_reviews', JSON.stringify(result.data));
+            renderTestimonials();
+        }
     }
 
     function renderAll() {
@@ -371,10 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (sb_client) {
-                sb_client.from('site_config').upsert(
-                    { id: 'reviews', payload: saved, updated_at: new Date().toISOString() },
-                    { onConflict: 'id' }
-                ).catch(() => {});
+                sbSave('reviews', saved).catch(() => {});
             }
 
             renderTestimonials();

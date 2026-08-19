@@ -76,29 +76,36 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error loading data.json:', e);
         }
 
-        let cloudData = null;
-        if (sb_client) {
-            try {
-                const { data, error } = await sb_client
-                    .from('site_config')
-                    .select('payload')
-                    .eq('id', 'main')
-                    .single();
-                if (!error && data && data.payload) {
-                    cloudData = data.payload;
-                }
-            } catch (e) {
-                console.warn('Supabase no disponible, usando localStorage:', e);
-            }
-        }
+        const cloudResult = await sbLoad('main');
+        const cloudData = cloudResult.ok ? cloudResult.data : null;
 
         const saved = localStorage.getItem('jerovia_data');
 
         if (cloudData && defaults) {
             siteData = deepMerge(defaults, cloudData);
+            if (saved) {
+                const local = JSON.parse(saved);
+                if (local.personal && local.personal.photo) {
+                    if (!siteData.personal) siteData.personal = {};
+                    siteData.personal.photo = local.personal.photo;
+                }
+                if (local.gallery && local.gallery.length > 0) {
+                    siteData.gallery = local.gallery;
+                }
+            }
             saveData();
         } else if (cloudData) {
             siteData = cloudData;
+            if (saved) {
+                const local = JSON.parse(saved);
+                if (local.personal && local.personal.photo) {
+                    if (!siteData.personal) siteData.personal = {};
+                    siteData.personal.photo = local.personal.photo;
+                }
+                if (local.gallery && local.gallery.length > 0) {
+                    siteData.gallery = local.gallery;
+                }
+            }
             saveData();
         } else if (saved && defaults) {
             const savedData = JSON.parse(saved);
@@ -114,15 +121,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         populateForm();
         renderLists();
+        updateSyncStatus(cloudResult);
     }
 
-    function saveData() {
+    async function saveData() {
         localStorage.setItem('jerovia_data', JSON.stringify(siteData));
-        if (sb_client) {
-            sb_client.from('site_config').upsert(
-                { id: 'main', payload: siteData, updated_at: new Date().toISOString() },
-                { onConflict: 'id' }
-            ).catch(e => console.warn('Error guardando en Supabase:', e));
+        const result = await sbSave('main', siteData);
+        updateSyncStatus(result);
+        return result;
+    }
+
+    function updateSyncStatus(result) {
+        const el = document.getElementById('syncStatus');
+        if (!el) return;
+        if (!sb_client) {
+            el.textContent = 'Sin conexion a Supabase';
+            el.className = 'sync-badge sync-offline';
+        } else if (result && result.ok) {
+            el.textContent = 'Sincronizado con Supabase';
+            el.className = 'sync-badge sync-ok';
+        } else if (result && result.error) {
+            el.textContent = 'Error: ' + result.error;
+            el.className = 'sync-badge sync-error';
+        } else {
+            el.textContent = 'Verificando conexion...';
+            el.className = 'sync-badge sync-checking';
         }
     }
 
@@ -626,9 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirm('Seguro que quieres restablecer todos los datos? Esto no se puede deshacer.')) return;
         localStorage.removeItem('jerovia_data');
         localStorage.removeItem('jerovia_reviews');
-        if (sb_client) {
-            sb_client.from('site_config').delete().in('id', ['main', 'reviews']).catch(() => {});
-        }
+        sbDelete(['main', 'reviews']);
         showToast('Datos restablecidos. Recarga la pagina.', 'success');
         setTimeout(() => location.reload(), 1500);
     });

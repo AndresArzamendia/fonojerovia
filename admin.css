@@ -905,6 +905,38 @@ body {
 .toast-admin.success { background: var(--success); }
 .toast-admin.error { background: var(--danger); }
 
+/* SYNC STATUS */
+.sync-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sync-ok {
+    background: #d4edda;
+    color: #155724;
+}
+
+.sync-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.sync-offline {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.sync-checking {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
 /* =========================================
    RESPONSIVE
    ========================================= */
@@ -963,6 +995,11 @@ body {
 
     .btn-save span {
         display: none;
+    }
+
+    .sync-badge {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.5rem;
     }
 
     .modal-card {
