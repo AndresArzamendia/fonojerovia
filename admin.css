@@ -716,6 +716,28 @@ body {
     margin-top: 0.8rem !important;
 }
 
+.settings-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.settings-actions .login-btn,
+.settings-actions label.login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+.settings-actions .login-btn i,
+.settings-actions label.login-btn i {
+    width: 16px;
+    height: 16px;
+}
+
 /* MODAL */
 .modal {
     position: fixed;

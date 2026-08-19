@@ -53,19 +53,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================
     // DATA
     // =========================================
-    async function loadData() {
-        const saved = localStorage.getItem('jerovia_data');
-        if (saved) {
-            siteData = JSON.parse(saved);
-        } else {
-            try {
-                const res = await fetch('data.json');
-                siteData = await res.json();
-                saveData();
-            } catch (e) {
-                console.error('Error loading data:', e);
-                siteData = { personal: {}, education: [], experience: [], certifications: [], services: [], gallery: [], testimonials: [] };
+    function deepMerge(base, override) {
+        if (!base || typeof base !== 'object') return override || base;
+        if (!override || typeof override !== 'object') return base;
+        const result = { ...base };
+        for (const key of Object.keys(override)) {
+            if (override[key] !== null && typeof override[key] === 'object' && !Array.isArray(override[key]) && typeof base[key] === 'object' && !Array.isArray(base[key])) {
+                result[key] = deepMerge(base[key], override[key]);
+            } else if (override[key] !== '' && override[key] !== null && override[key] !== undefined) {
+                result[key] = override[key];
             }
+        }
+        return result;
+    }
+
+    async function loadData() {
+        let defaults = null;
+        try {
+            const res = await fetch('data.json');
+            defaults = await res.json();
+        } catch (e) {
+            console.error('Error loading data.json:', e);
+        }
+
+        const saved = localStorage.getItem('jerovia_data');
+        if (saved && defaults) {
+            const savedData = JSON.parse(saved);
+            siteData = deepMerge(defaults, savedData);
+            saveData();
+        } else if (saved) {
+            siteData = JSON.parse(saved);
+        } else if (defaults) {
+            siteData = defaults;
+            saveData();
+        } else {
+            siteData = { personal: {}, education: [], experience: [], certifications: [], services: [], gallery: [], testimonials: [] };
         }
         populateForm();
         renderLists();
@@ -90,6 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         setVal('field-email', p.email);
         setVal('field-address', p.address);
         setVal('field-whatsapp', p.whatsapp);
+        setVal('field-googleMapsUrl', p.googleMapsUrl);
+        setVal('field-schedule', p.schedule);
+        setVal('field-instagram', p.instagram);
+        setVal('field-facebook', p.facebook);
+        setVal('field-statYears', p.statYears);
+        setVal('field-statPatients', p.statPatients);
+        setVal('field-statCertifications', p.statCertifications);
     }
 
     function setVal(id, val) {
@@ -122,7 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: getVal('field-phone'),
                 email: getVal('field-email'),
                 address: getVal('field-address'),
-                whatsapp: getVal('field-whatsapp')
+                whatsapp: getVal('field-whatsapp'),
+                googleMapsUrl: getVal('field-googleMapsUrl'),
+                schedule: getVal('field-schedule'),
+                instagram: getVal('field-instagram'),
+                facebook: getVal('field-facebook'),
+                statYears: getVal('field-statYears'),
+                statPatients: getVal('field-statPatients'),
+                statCertifications: getVal('field-statCertifications'),
+                photo: siteData.personal?.photo || ''
             };
         }
 
@@ -555,6 +592,49 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Datos restablecidos. Recarga la pagina.', 'success');
         setTimeout(() => location.reload(), 1500);
     });
+
+    // =========================================
+    // EXPORT / IMPORT
+    // =========================================
+    document.getElementById('exportDataBtn').addEventListener('click', () => {
+        const dataStr = JSON.stringify(siteData, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `jerovia-backup-${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Archivo exportado correctamente', 'success');
+    });
+
+    const importInput = document.getElementById('importDataInput');
+    if (importInput) {
+        importInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const imported = JSON.parse(ev.target.result);
+                    if (!imported.personal && !imported.education) {
+                        showToast('El archivo no tiene formato valido', 'error');
+                        return;
+                    }
+                    if (!confirm('Esto reemplazara todos los datos actuales. Continuar?')) return;
+                    siteData = imported;
+                    saveData();
+                    populateForm();
+                    renderLists();
+                    showToast('Datos importados correctamente', 'success');
+                } catch (err) {
+                    showToast('Error al leer el archivo', 'error');
+                }
+            };
+            reader.readAsText(file);
+            importInput.value = '';
+        });
+    }
 
     // =========================================
     // MODAL

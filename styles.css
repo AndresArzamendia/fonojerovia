@@ -173,6 +173,53 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
+/* Navbar info chips */
+.navbar-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.navbar-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    color: var(--accent-dark);
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.navbar-chip i {
+    width: 13px;
+    height: 13px;
+    color: var(--accent-color);
+    flex-shrink: 0;
+}
+
+.navbar-chip:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.phone-chip:hover {
+    background: rgba(37, 211, 102, 0.15);
+    border-color: rgba(37, 211, 102, 0.3);
+}
+
+.phone-chip:hover i {
+    color: #25d366;
+}
+
 /* =========================================
    SECTIONS & HERO
    ========================================= */
@@ -323,6 +370,19 @@ h1 {
     padding: 0.35rem 0.9rem;
     border-radius: 50px;
     border: 1px solid var(--border-color);
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.contact-chip.clickable-chip {
+    cursor: pointer;
+}
+
+.contact-chip.clickable-chip:hover {
+    border-color: rgba(75, 156, 211, 0.3);
+    background: rgba(75, 156, 211, 0.05);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(75, 156, 211, 0.1);
 }
 
 .contact-chip i {
@@ -1025,21 +1085,41 @@ h1 {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 14px;
-    padding: 1.5rem;
+    padding: 1.2rem 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    text-decoration: none;
+    color: inherit;
 }
 
-.info-card:hover {
-    transform: translateX(5px);
+.info-card.clickable-card {
+    cursor: pointer;
+}
+
+.info-card.clickable-card:hover {
+    transform: translateX(6px);
+    box-shadow: 0 6px 20px rgba(75, 156, 211, 0.1);
+    border-color: rgba(75, 156, 211, 0.2);
+}
+
+.info-card h4 {
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    margin-bottom: 0.15rem;
+}
+
+.info-card p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 .info-icon {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
     background: var(--accent-glow);
     display: flex;
@@ -1049,16 +1129,9 @@ h1 {
     color: var(--accent-color);
 }
 
-.info-card h4 {
-    font-size: 0.9rem;
-    color: var(--accent-dark);
-    margin-bottom: 0.2rem;
-}
-
-.info-card p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin: 0;
+.info-icon i {
+    width: 20px;
+    height: 20px;
 }
 
 .contact-form-card {
@@ -1108,8 +1181,8 @@ h1 {
 }
 
 /* =========================================
-   WHATSAPP & ADMIN FAB
-   ========================================= */
+    WHATSAPP FLOTANTE
+    ========================================= */
 .whatsapp-float {
     position: fixed;
     bottom: 30px;
@@ -1131,36 +1204,6 @@ h1 {
 .whatsapp-float:hover {
     transform: scale(1.12);
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.55);
-}
-
-.admin-fab {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    width: 50px;
-    height: 50px;
-    background-color: var(--accent-dark);
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(30, 67, 99, 0.3);
-    z-index: 999;
-    text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0.7;
-}
-
-.admin-fab:hover {
-    transform: scale(1.1);
-    opacity: 1;
-    box-shadow: 0 6px 20px rgba(30, 67, 99, 0.4);
-}
-
-.admin-fab i {
-    width: 22px;
-    height: 22px;
 }
 
 /* =========================================
@@ -1413,6 +1456,18 @@ footer p {
         font-size: 0.78rem;
         padding: 0.45rem 0.8rem;
     }
+
+    .navbar-chip span {
+        display: none;
+    }
+
+    .navbar-chip {
+        padding: 0.35rem;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 900px) {
@@ -1498,6 +1553,27 @@ footer p {
         text-align: center;
     }
 
+    .navbar-info {
+        display: none;
+    }
+
+    .nav-links-extra {
+        display: none !important;
+    }
+
+    .nav-links.open .nav-links-extra {
+        display: flex !important;
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+        list-style: none;
+    }
+
+    .nav-links.open .nav-links-extra a {
+        background: rgba(255,255,255,0.3);
+        backdrop-filter: blur(6px);
+    }
+
     h1 {
         font-size: 2.2rem;
         line-height: 1.2;
@@ -1549,13 +1625,6 @@ footer p {
 
     .section-title {
         font-size: 1.5rem;
-    }
-
-    .admin-fab {
-        bottom: 100px;
-        left: 20px;
-        width: 44px;
-        height: 44px;
     }
 
     .whatsapp-float {

@@ -55,21 +55,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load data
     let siteData = null;
 
-    async function loadData() {
-        const saved = localStorage.getItem('jerovia_data');
-        if (saved) {
-            siteData = JSON.parse(saved);
-            renderAll();
-            return;
+    function deepMerge(base, override) {
+        if (!base || typeof base !== 'object') return override || base;
+        if (!override || typeof override !== 'object') return base;
+        const result = { ...base };
+        for (const key of Object.keys(override)) {
+            if (override[key] !== null && typeof override[key] === 'object' && !Array.isArray(override[key]) && typeof base[key] === 'object' && !Array.isArray(base[key])) {
+                result[key] = deepMerge(base[key], override[key]);
+            } else if (override[key] !== '' && override[key] !== null && override[key] !== undefined) {
+                result[key] = override[key];
+            }
         }
+        return result;
+    }
+
+    async function loadData() {
+        let defaults = null;
         try {
             const res = await fetch('data.json');
-            siteData = await res.json();
-            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
-            renderAll();
+            defaults = await res.json();
         } catch (e) {
-            console.error('Error loading data:', e);
+            console.error('Error loading data.json:', e);
         }
+
+        const saved = localStorage.getItem('jerovia_data');
+        if (saved && defaults) {
+            const savedData = JSON.parse(saved);
+            siteData = deepMerge(defaults, savedData);
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        } else if (saved) {
+            siteData = JSON.parse(saved);
+        } else if (defaults) {
+            siteData = defaults;
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        }
+        renderAll();
     }
 
     function renderAll() {
@@ -98,13 +118,66 @@ document.addEventListener('DOMContentLoaded', () => {
         setText('contactEmail', p.email);
         setText('contactAddress', p.address);
 
+        if (p.statYears) setText('statYears', p.statYears);
+        if (p.statPatients) setText('statPatients', p.statPatients);
+        if (p.statCertifications) setText('statCertifications', p.statCertifications);
+
         const waLink = document.querySelector('.whatsapp-float');
         if (waLink && p.whatsapp) waLink.href = `https://wa.me/${p.whatsapp}`;
+
+        const waFooter = document.querySelector('.footer-links a[aria-label="WhatsApp"]');
+        if (waFooter && p.whatsapp) waFooter.href = `https://wa.me/${p.whatsapp}`;
 
         if (p.photo) {
             const heroPhoto = document.getElementById('heroPhoto');
             if (heroPhoto) heroPhoto.src = p.photo;
         }
+
+        const navAddress = document.getElementById('navAddress');
+        if (navAddress && p.address) navAddress.textContent = p.address;
+
+        const navLocation = document.getElementById('navLocation');
+        if (navLocation && p.googleMapsUrl) navLocation.href = p.googleMapsUrl;
+
+        const navLocationMobile = document.getElementById('navLocationMobile');
+        if (navLocationMobile && p.googleMapsUrl) navLocationMobile.href = p.googleMapsUrl;
+
+        const navPhone = document.getElementById('navPhone');
+        if (navPhone && p.phone) navPhone.href = `tel:${p.phone.replace(/\s/g, '')}`;
+
+        const navPhoneNum = document.getElementById('navPhoneNum');
+        if (navPhoneNum && p.phone) navPhoneNum.textContent = p.phone;
+
+        const navPhoneMobile = document.getElementById('navPhoneMobile');
+        if (navPhoneMobile && p.phone) navPhoneMobile.href = `tel:${p.phone.replace(/\s/g, '')}`;
+
+        const heroAddressCard = document.getElementById('heroAddressCard');
+        if (heroAddressCard && p.googleMapsUrl) {
+            heroAddressCard.href = p.googleMapsUrl;
+        }
+
+        const heroPhoneCard = document.getElementById('heroPhoneCard');
+        if (heroPhoneCard && p.phone) {
+            heroPhoneCard.href = `tel:${p.phone.replace(/\s/g, '')}`;
+        }
+
+        const instaLink = document.querySelector('.footer-links a[aria-label="Instagram"]');
+        if (instaLink && p.instagram) instaLink.href = p.instagram;
+
+        const fbLink = document.querySelector('.footer-links a[aria-label="Facebook"]');
+        if (fbLink && p.facebook) fbLink.href = p.facebook;
+
+        const scheduleEl = document.getElementById('contactSchedule');
+        if (scheduleEl && p.schedule) scheduleEl.textContent = p.schedule;
+
+        const phoneCard = document.getElementById('contactPhoneCard');
+        if (phoneCard && p.phone) phoneCard.href = `tel:${p.phone.replace(/\s/g, '')}`;
+
+        const emailCard = document.getElementById('contactEmailCard');
+        if (emailCard && p.email) emailCard.href = `mailto:${p.email}`;
+
+        const addressCard = document.getElementById('contactAddressCard');
+        if (addressCard && p.googleMapsUrl) addressCard.href = p.googleMapsUrl;
 
         document.title = `${p.name} | ${p.title} - Jerovia`;
     }

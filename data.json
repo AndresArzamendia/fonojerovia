@@ -2,14 +2,21 @@
   "personal": {
     "name": "Paola Torres",
     "title": "Fonoaudiloga",
-    "subtitle": "Consultorio Fonoaudiológico Jerovia",
-    "bio": "Soy una profesional apasionada por el desarrollo infantil y la salud auditiva. Con años de experiencia en fonoaudiología, me dedico a brindar un espacio seguro, cálido y profesional donde cada niño y familia puede alcanzar su máximo potencial. Mi enfoque se basa en la confianza, la paciencia y el amor por lo que hago.",
+    "subtitle": "Consultorio Fonoaudiologico Jerovia",
+    "bio": "Soy una profesional apasionada por el desarrollo infantil y la salud auditiva. Con anios de experiencia en fonoaudiologia, me dedico a brindar un espacio seguro, caloroso y profesional donde cada nino y familia puede alcanzar su maximo potencial. Mi enfoque se basa en la confianza, la paciencia y el amor por lo que hago.",
     "phone": "+595 976 220 370",
     "email": "paola@jerovia.com",
-    "address": "Asunción, Paraguay",
+    "address": "Luque, Paraguay",
+    "googleMapsUrl": "https://maps.google.com/?q=Luque+Paraguay",
     "whatsapp": "595976220370",
     "badge": "Consultorio Fonoaudilogico",
-    "quote": "Solo basta confiar, lo escencial es invisible..."
+    "quote": "Solo basta confiar, lo escencial es invisible...",
+    "schedule": "Lunes a Viernes: 8:00 - 17:00 | Sabados: 8:00 - 12:00",
+    "instagram": "",
+    "facebook": "",
+    "statYears": "5+",
+    "statPatients": "200+",
+    "statCertifications": "3+"
   },
   "education": [
     {

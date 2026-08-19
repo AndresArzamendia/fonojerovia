@@ -137,6 +137,34 @@
                             <label>Numero WhatsApp (con codigo)</label>
                             <input type="text" id="field-whatsapp" placeholder="595976220370">
                         </div>
+                        <div class="form-group full-width">
+                            <label>URL de Google Maps</label>
+                            <input type="url" id="field-googleMapsUrl" placeholder="https://maps.google.com/?q=...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Horario de Atencion</label>
+                            <input type="text" id="field-schedule" placeholder="Lunes a Viernes: 8:00 - 17:00">
+                        </div>
+                        <div class="form-group">
+                            <label>Instagram (URL completa)</label>
+                            <input type="url" id="field-instagram" placeholder="https://instagram.com/tu_usuario">
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook (URL completa)</label>
+                            <input type="url" id="field-facebook" placeholder="https://facebook.com/tu_pagina">
+                        </div>
+                        <div class="form-group">
+                            <label>Estadistica: Anos de experiencia</label>
+                            <input type="text" id="field-statYears" placeholder="5+">
+                        </div>
+                        <div class="form-group">
+                            <label>Estadistica: Pacientes atendidos</label>
+                            <input type="text" id="field-statPatients" placeholder="200+">
+                        </div>
+                        <div class="form-group">
+                            <label>Estadistica: Certificaciones</label>
+                            <input type="text" id="field-statCertifications" placeholder="3+">
+                        </div>
                     </div>
                 </section>
 
@@ -259,6 +287,20 @@
                                 </div>
                                 <button type="submit" class="login-btn">Actualizar Contrasena</button>
                             </form>
+                        </div>
+                        <div class="settings-card">
+                            <h3><i data-lucide="download"></i> Exportar / Importar</h3>
+                            <p>Guarda una copia de seguridad de todos los datos o importa una copia anterior.</p>
+                            <div class="settings-actions">
+                                <button class="login-btn" id="exportDataBtn">
+                                    <i data-lucide="download"></i> Exportar datos (JSON)
+                                </button>
+                                <label class="login-btn" id="importDataLabel" style="cursor:pointer;">
+                                    <i data-lucide="upload"></i> Importar datos (JSON)
+                                </label>
+                                <input type="file" id="importDataInput" accept=".json" class="hidden-input">
+                            </div>
+                            <p class="settings-hint">La exportacion descarga un archivo .json con todos los datos actuales.</p>
                         </div>
                         <div class="settings-card">
                             <h3><i data-lucide="database"></i> Gestionar Datos</h3>
