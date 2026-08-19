@@ -71,7 +71,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.4rem 8%;
+    padding: 0.4rem 4%;
     position: fixed;
     top: 0;
     left: 0;
@@ -81,6 +81,7 @@ body {
     -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    gap: 0.5rem;
 }
 
 .logo-capsule {
@@ -93,6 +94,7 @@ body {
     text-decoration: none;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, background 0.3s ease;
+    flex-shrink: 0;
 }
 
 .logo-capsule:hover {
@@ -149,6 +151,10 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .nav-links a {
@@ -158,8 +164,8 @@ body {
     text-decoration: none;
     font-family: var(--font-sans);
     font-weight: 700;
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
+    font-size: 0.78rem;
+    padding: 0.4rem 0.75rem;
     border-radius: 50px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
@@ -178,6 +184,7 @@ body {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .navbar-chip {
@@ -1453,8 +1460,8 @@ footer p {
    ========================================= */
 @media (max-width: 1024px) {
     .nav-links a {
-        font-size: 0.78rem;
-        padding: 0.45rem 0.8rem;
+        font-size: 0.72rem;
+        padding: 0.35rem 0.6rem;
     }
 
     .navbar-chip span {
@@ -1555,23 +1562,6 @@ footer p {
 
     .navbar-info {
         display: none;
-    }
-
-    .nav-links-extra {
-        display: none !important;
-    }
-
-    .nav-links.open .nav-links-extra {
-        display: flex !important;
-        flex-direction: column;
-        width: 100%;
-        gap: 0.5rem;
-        list-style: none;
-    }
-
-    .nav-links.open .nav-links-extra a {
-        background: rgba(255,255,255,0.3);
-        backdrop-filter: blur(6px);
     }
 
     h1 {

@@ -134,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================
     // SAVE PERSONAL DATA
     // =========================================
-    document.getElementById('saveAllBtn').addEventListener('click', () => {
+    const saveAllBtn = document.getElementById('saveAllBtn');
+    if (saveAllBtn) saveAllBtn.addEventListener('click', () => {
         const activeSection = document.querySelector('.admin-section.active');
         if (!activeSection) return;
 
@@ -414,7 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ADD BUTTONS
-    document.getElementById('addEducationBtn').addEventListener('click', () => {
+    const addEducationBtn = document.getElementById('addEducationBtn');
+    if (addEducationBtn) addEducationBtn.addEventListener('click', () => {
         openModal('Agregar Formacion', [
             { key: 'degree', label: 'Titulo / Grado', placeholder: 'Licenciatura en ...' },
             { key: 'institution', label: 'Institucion', placeholder: 'Universidad de ...' },
@@ -430,7 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('addExperienceBtn').addEventListener('click', () => {
+    const addExperienceBtn = document.getElementById('addExperienceBtn');
+    if (addExperienceBtn) addExperienceBtn.addEventListener('click', () => {
         openModal('Agregar Experiencia', [
             { key: 'role', label: 'Cargo', placeholder: 'Fonoaudiloga' },
             { key: 'company', label: 'Empresa / Lugar', placeholder: 'Centro ...' },
@@ -446,7 +449,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('addCertBtn').addEventListener('click', () => {
+    const addCertBtn = document.getElementById('addCertBtn');
+    if (addCertBtn) addCertBtn.addEventListener('click', () => {
         openModal('Agregar Certificacion', [
             { key: 'name', label: 'Nombre', placeholder: 'Certificacion en ...' },
             { key: 'institution', label: 'Institucion', placeholder: 'Colegio de ...' },
@@ -462,7 +466,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('addServiceBtn').addEventListener('click', () => {
+    const addServiceBtn = document.getElementById('addServiceBtn');
+    if (addServiceBtn) addServiceBtn.addEventListener('click', () => {
         openModal('Agregar Servicio', [
             { key: 'title', label: 'Nombre del servicio', placeholder: 'Terapia de ...' },
             { key: 'description', label: 'Descripcion', type: 'textarea', placeholder: 'Describe el servicio...' },
@@ -477,7 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('addTestimonialBtn').addEventListener('click', () => {
+    const addTestimonialBtn = document.getElementById('addTestimonialBtn');
+    if (addTestimonialBtn) addTestimonialBtn.addEventListener('click', () => {
         openModal('Agregar Testimonio', [
             { key: 'name', label: 'Nombre', placeholder: 'Maria G.' },
             { key: 'role', label: 'Rol', type: 'select', options: ['Mama', 'Papa', 'Tutor'], value: 'Mama' },
@@ -558,7 +564,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================
     // SETTINGS
     // =========================================
-    document.getElementById('changePasswordForm').addEventListener('submit', (e) => {
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) changePasswordForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const current = document.getElementById('currentPass').value;
         const newPass = document.getElementById('newPass').value;
@@ -585,7 +592,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Contrasena actualizada', 'success');
     });
 
-    document.getElementById('resetDataBtn').addEventListener('click', () => {
+    const resetDataBtn = document.getElementById('resetDataBtn');
+    if (resetDataBtn) resetDataBtn.addEventListener('click', () => {
         if (!confirm('Seguro que quieres restablecer todos los datos? Esto no se puede deshacer.')) return;
         localStorage.removeItem('jerovia_data');
         localStorage.removeItem('jerovia_reviews');
@@ -596,7 +604,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================
     // EXPORT / IMPORT
     // =========================================
-    document.getElementById('exportDataBtn').addEventListener('click', () => {
+    const exportDataBtn = document.getElementById('exportDataBtn');
+    if (exportDataBtn) exportDataBtn.addEventListener('click', () => {
         const dataStr = JSON.stringify(siteData, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);

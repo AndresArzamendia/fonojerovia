@@ -139,17 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const navLocation = document.getElementById('navLocation');
         if (navLocation && p.googleMapsUrl) navLocation.href = p.googleMapsUrl;
 
-        const navLocationMobile = document.getElementById('navLocationMobile');
-        if (navLocationMobile && p.googleMapsUrl) navLocationMobile.href = p.googleMapsUrl;
-
         const navPhone = document.getElementById('navPhone');
         if (navPhone && p.phone) navPhone.href = `tel:${p.phone.replace(/\s/g, '')}`;
 
         const navPhoneNum = document.getElementById('navPhoneNum');
         if (navPhoneNum && p.phone) navPhoneNum.textContent = p.phone;
-
-        const navPhoneMobile = document.getElementById('navPhoneMobile');
-        if (navPhoneMobile && p.phone) navPhoneMobile.href = `tel:${p.phone.replace(/\s/g, '')}`;
 
         const heroAddressCard = document.getElementById('heroAddressCard');
         if (heroAddressCard && p.googleMapsUrl) {
