@@ -316,16 +316,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderServices() {
         const container = document.getElementById('servicesGrid');
         if (!container || !siteData.services) return;
-        container.innerHTML = siteData.services.map(item => `
-            <div class="service-card">
-                <div class="service-icon">
-                    <i data-lucide="${item.icon || 'heart'}"></i>
+        container.innerHTML = siteData.services.map(item => {
+            const icon = item.icon || 'heart';
+            return `
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i data-lucide="${icon}"></i>
+                    </div>
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
                 </div>
-                <h3>${item.title}</h3>
-                <p>${item.description}</p>
-            </div>
-        `).join('');
-        if (typeof lucide !== 'undefined') lucide.createIcons();
+            `;
+        }).join('');
+        setTimeout(() => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }, 50);
     }
 
     function renderGallery() {
