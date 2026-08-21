@@ -404,6 +404,7 @@ body {
 .hero {
     min-height: 100vh;
     min-height: 100dvh;
+    min-height: var(--app-height, 100dvh);
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
@@ -1802,8 +1803,10 @@ footer p {
     top: 0;
     left: 0;
     width: 100vw;
+    width: 100dvw;
     height: 100vh;
     height: 100dvh;
+    height: var(--app-height, 100dvh);
     background: linear-gradient(135deg, #e8f4f8, #f0f4f8, #f0e6f6, #fef9ef);
     background-size: 400% 400%;
     animation: splashBgShift 6s ease infinite;
@@ -1813,6 +1816,7 @@ footer p {
     z-index: 9999;
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
     overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #loader-wrapper::before {

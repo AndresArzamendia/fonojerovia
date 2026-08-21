@@ -3,7 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
     const loader = document.getElementById('loader-wrapper');
-    if (loader) setTimeout(() => loader.classList.add('loader-hidden'), 3500);
+    if (loader) {
+        function setViewportHeight() {
+            const vh = window.innerHeight + 'px';
+            loader.style.height = vh;
+            document.documentElement.style.setProperty('--app-height', vh);
+        }
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+        setTimeout(() => loader.classList.add('loader-hidden'), 3500);
+    }
 
     const navbar = document.querySelector('.navbar');
     if (navbar) setTimeout(() => navbar.classList.add('navbar-visible'), 3500);
