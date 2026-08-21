@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('loader-wrapper');
     if (loader) setTimeout(() => loader.classList.add('loader-hidden'), 3500);
 
+    const navbar = document.querySelector('.navbar');
+    if (navbar) setTimeout(() => navbar.classList.add('navbar-visible'), 3500);
+
     // Generate splash particles
     const splashParticles = document.getElementById('splashParticles');
     if (splashParticles) {

@@ -83,8 +83,13 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.45);
     gap: 0.5rem;
     opacity: 0;
+    visibility: hidden;
     transform: translateY(-100%);
-    animation: navbarSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 3.6s forwards;
+}
+
+.navbar.navbar-visible {
+    visibility: visible;
+    animation: navbarSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes navbarSlideIn {
@@ -1815,8 +1820,8 @@ footer p {
     position: absolute;
     top: -30%;
     left: -20%;
-    width: 600px;
-    height: 600px;
+    width: min(600px, 80vw);
+    height: min(600px, 80vw);
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255,182,193,0.25) 0%, transparent 70%);
     animation: splashOrb1 5s ease-in-out infinite alternate;
@@ -1827,8 +1832,8 @@ footer p {
     position: absolute;
     bottom: -20%;
     right: -15%;
-    width: 500px;
-    height: 500px;
+    width: min(500px, 70vw);
+    height: min(500px, 70vw);
     border-radius: 50%;
     background: radial-gradient(circle, rgba(168,230,207,0.3) 0%, transparent 70%);
     animation: splashOrb2 6s ease-in-out infinite alternate;
@@ -1883,6 +1888,7 @@ footer p {
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+    padding: 1rem;
 }
 
 .splash-logo {
@@ -2246,7 +2252,7 @@ footer p {
         animation: none !important;
     }
 
-    .navbar { opacity: 1; transform: none; }
+    .navbar { opacity: 1; visibility: visible; transform: none; }
     .splash-logo { opacity: 1; transform: scale(1); }
     .splash-name { opacity: 1; transform: none; }
     .splash-phrase { opacity: 1; transform: none; }
@@ -2266,26 +2272,54 @@ footer p {
    RESPONSIVE
    ========================================= */
 @media (max-width: 1024px) {
+    .mobile-menu-btn {
+        display: flex;
+    }
+
     .nav-links {
-        gap: 0.2rem;
-        padding: 0.25rem;
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(240, 244, 248, 0.98);
+        backdrop-filter: blur(20px) saturate(1.6);
+        -webkit-backdrop-filter: blur(20px) saturate(1.6);
+        flex-direction: column;
+        padding: 0.6rem;
+        gap: 0.3rem;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        border-top: 1px solid rgba(255,255,255,0.5);
+        flex: none;
+        overflow: visible;
+        background-clip: padding-box;
+    }
+
+    .nav-links.open {
+        display: flex;
+        animation: mobileMenuIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes mobileMenuIn {
+        from { opacity: 0; transform: translateY(-12px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .nav-links a {
-        font-size: 0.7rem;
-        padding: 0.35rem 0.55rem;
+        width: 100%;
+        text-align: center;
+        font-size: 0.88rem;
+        padding: 0.7rem 1rem;
+        border-radius: 14px;
     }
 
-    .navbar-chip span {
+    .nav-links a:hover {
+        transform: scale(1.02);
+    }
+
+    .navbar-info {
         display: none;
-    }
-
-    .navbar-chip {
-        padding: 0.35rem;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        justify-content: center;
     }
 
     .logo-capsule {
@@ -2352,57 +2386,11 @@ footer p {
     .splash-logo { width: 90px; height: 90px; }
     .splash-name { font-size: 1.8rem; letter-spacing: 4px; }
     .splash-phrase { font-size: 0.85rem; max-width: 260px; }
+    .splash-screen { gap: 1rem; }
 
     .navbar {
         padding: 0.4rem 3%;
         gap: 0.4rem;
-    }
-
-    .mobile-menu-btn {
-        display: flex;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(240, 244, 248, 0.98);
-        backdrop-filter: blur(20px) saturate(1.6);
-        -webkit-backdrop-filter: blur(20px) saturate(1.6);
-        flex-direction: column;
-        padding: 0.6rem;
-        gap: 0.3rem;
-        border-radius: 0 0 18px 18px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-        border-top: 1px solid rgba(255,255,255,0.5);
-    }
-
-    .nav-links.open {
-        display: flex;
-        animation: mobileMenuIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    @keyframes mobileMenuIn {
-        from { opacity: 0; transform: translateY(-12px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .nav-links a {
-        width: 100%;
-        text-align: center;
-        font-size: 0.88rem;
-        padding: 0.7rem 1rem;
-        border-radius: 14px;
-    }
-
-    .nav-links a:hover {
-        transform: scale(1.02);
-    }
-
-    .navbar-info {
-        display: none;
     }
 
     .logo-text {
@@ -2574,6 +2562,7 @@ footer p {
     .splash-name { font-size: 1.5rem; letter-spacing: 3px; }
     .splash-phrase { font-size: 0.78rem; max-width: 220px; }
     .splash-bar { width: 140px; }
+    .splash-screen { gap: 0.8rem; }
 
     .navbar {
         padding: 0.35rem 3%;
@@ -2692,6 +2681,7 @@ footer p {
     .splash-name { font-size: 1.3rem; letter-spacing: 2px; }
     .splash-phrase { font-size: 0.72rem; max-width: 190px; }
     .splash-bar { width: 120px; }
+    .splash-screen { gap: 0.6rem; }
 
     .hero {
         padding-left: 3%;
