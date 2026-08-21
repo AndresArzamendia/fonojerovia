@@ -337,6 +337,17 @@ body {
     gap: 0.6rem;
     position: relative;
     padding-bottom: 1rem;
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.section-anim.visible .section-title {
+    animation: titleSlideIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+@keyframes titleSlideIn {
+    0% { opacity: 0; transform: translateX(-30px); }
+    100% { opacity: 1; transform: translateX(0); }
 }
 
 .section-title::after {
@@ -344,16 +355,44 @@ body {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60px;
+    width: 0;
     height: 4px;
     border-radius: 2px;
-    background: linear-gradient(90deg, var(--accent-color), var(--pastel-purple));
+    background: linear-gradient(90deg, var(--accent-color), var(--pastel-purple), var(--accent-color));
+    background-size: 200% 100%;
+    animation: titleLineGrow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards,
+               titleLineShimmer 3s ease-in-out 1.2s infinite;
+}
+
+.section-anim.visible .section-title::after {
+    width: 60px;
+}
+
+@keyframes titleLineGrow {
+    0% { width: 0; }
+    100% { width: 60px; }
+}
+
+@keyframes titleLineShimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
 }
 
 .section-title i {
     width: 28px;
     height: 28px;
     color: var(--accent-color);
+    opacity: 0;
+    transform: scale(0.3) rotate(-20deg);
+}
+
+.section-anim.visible .section-title i {
+    animation: titleIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s forwards;
+}
+
+@keyframes titleIconPop {
+    0% { opacity: 0; transform: scale(0.3) rotate(-20deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 .hero {
