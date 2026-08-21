@@ -141,6 +141,37 @@ document.addEventListener('DOMContentLoaded', () => {
         renderServices();
         renderGallery();
         renderTestimonials();
+        renderLogo();
+        applyVisibility();
+        applyTheme();
+    }
+
+    function renderLogo() {
+        const p = siteData.personal;
+        if (!p) return;
+        const logoEl = document.getElementById('siteLogo');
+        if (logoEl && p.siteLogo) {
+            logoEl.src = p.siteLogo;
+        }
+    }
+
+    function applyVisibility() {
+        const vis = siteData.visibility || {};
+        Object.keys(vis).forEach(id => {
+            const section = document.getElementById(id);
+            if (section) {
+                section.style.display = vis[id] === false ? 'none' : '';
+            }
+        });
+    }
+
+    function applyTheme() {
+        const theme = siteData.theme;
+        if (!theme || !theme.accent) return;
+        const root = document.documentElement;
+        root.style.setProperty('--accent-color', theme.accent);
+        root.style.setProperty('--accent-dark', theme.accentDark || '#1E4363');
+        root.style.setProperty('--accent-glow', theme.accent + '26');
     }
 
     function renderPersonal() {

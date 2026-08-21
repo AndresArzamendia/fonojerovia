@@ -49,6 +49,9 @@
                 <a href="#" class="nav-item active" data-section="sec-personal">
                     <i data-lucide="user"></i><span>Datos Personales</span>
                 </a>
+                <a href="#" class="nav-item" data-section="sec-logo">
+                    <i data-lucide="image"></i><span>Logo / Imagenes</span>
+                </a>
                 <a href="#" class="nav-item" data-section="sec-photo">
                     <i data-lucide="camera"></i><span>Foto Principal</span>
                 </a>
@@ -69,6 +72,12 @@
                 </a>
                 <a href="#" class="nav-item" data-section="sec-testimonials">
                     <i data-lucide="message-square"></i><span>Testimonios</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-visibility">
+                    <i data-lucide="eye"></i><span>Visibilidad</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-theme">
+                    <i data-lucide="palette"></i><span>Tema / Colores</span>
                 </a>
                 <a href="#" class="nav-item" data-section="sec-settings">
                     <i data-lucide="settings"></i><span>Configuracion</span>
@@ -191,6 +200,32 @@
                     </div>
                 </section>
 
+                <!-- LOGO / IMAGES -->
+                <section class="admin-section" id="sec-logo">
+                    <div class="section-header">
+                        <h2>Logo e Imagenes del Sitio</h2>
+                        <p>Personaliza el logo que aparece en la barra de navegacion y en el footer</p>
+                    </div>
+                    <div class="settings-card" style="margin-bottom:1.5rem;">
+                        <h3><i data-lucide="image"></i> Logo de la Navbar</h3>
+                        <div class="logo-upload-area">
+                            <div class="logo-preview" id="logoPreview">
+                                <span class="logo-placeholder" id="logoPlaceholder">J</span>
+                            </div>
+                            <div class="upload-controls">
+                                <label class="upload-btn" for="logoInput">
+                                    <i data-lucide="upload"></i> Seleccionar logo
+                                </label>
+                                <input type="file" id="logoInput" accept="image/*" class="hidden-input">
+                                <p class="upload-hint">Se recomienda imagen cuadrada (200x200 o mas). Maximo 2MB.</p>
+                                <button class="danger-btn" id="removeLogoBtn" style="margin-top:0.5rem;">
+                                    <i data-lucide="trash-2"></i> Quitar logo (usar letra por defecto)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- EDUCATION -->
                 <section class="admin-section" id="sec-education">
                     <div class="section-header">
@@ -264,6 +299,104 @@
                     <button class="add-item-btn" id="addTestimonialBtn">
                         <i data-lucide="plus-circle"></i> Agregar testimonio
                     </button>
+                </section>
+
+                <!-- VISIBILITY -->
+                <section class="admin-section" id="sec-visibility">
+                    <div class="section-header">
+                        <h2>Visibilidad de Secciones</h2>
+                        <p>Activa o desactiva secciones de la pagina principal</p>
+                    </div>
+                    <div class="visibility-grid">
+                        <div class="visibility-item">
+                            <span>Sobre Mi</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="sobre-mi" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Formacion Academica</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="formacion" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Experiencia Laboral</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="experiencia" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Certificaciones</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="certificaciones" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Servicios</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="servicios" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Galeria</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="galeria" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Opiniones / Testimonios</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="opiniones" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Contacto</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="contacto" checked><span class="toggle-slider"></span></label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- THEME -->
+                <section class="admin-section" id="sec-theme">
+                    <div class="section-header">
+                        <h2>Tema y Colores</h2>
+                        <p>Personaliza el color principal del sitio</p>
+                    </div>
+                    <div class="settings-card" style="margin-bottom:1.5rem;">
+                        <h3><i data-lucide="palette"></i> Color Principal</h3>
+                        <p>Elige un tema de color para toda la pagina.</p>
+                        <div class="theme-grid" id="themeGrid">
+                            <div class="theme-option active" data-theme='{"accent":"#4B9CD3","accentDark":"#1E4363","name":"Azul Original"}'>
+                                <div class="theme-swatch" style="background: linear-gradient(135deg, #4B9CD3, #1E4363);"></div>
+                                <p>Azul Original</p>
+                            </div>
+                            <div class="theme-option" data-theme='{"accent":"#8B5CF6","accentDark":"#5B21B6","name":"Violeta"}'>
+                                <div class="theme-swatch" style="background: linear-gradient(135deg, #8B5CF6, #5B21B6);"></div>
+                                <p>Violeta</p>
+                            </div>
+                            <div class="theme-option" data-theme='{"accent":"#10B981","accentDark":"#065F46","name":"Verde"}'>
+                                <div class="theme-swatch" style="background: linear-gradient(135deg, #10B981, #065F46);"></div>
+                                <p>Verde</p>
+                            </div>
+                            <div class="theme-option" data-theme='{"accent":"#F59E0B","accentDark":"#92400E","name":"Naranja"}'>
+                                <div class="theme-swatch" style="background: linear-gradient(135deg, #F59E0B, #92400E);"></div>
+                                <p>Naranja</p>
+                            </div>
+                            <div class="theme-option" data-theme='{"accent":"#EC4899","accentDark":"#9D174D","name":"Rosa"}'>
+                                <div class="theme-swatch" style="background: linear-gradient(135deg, #EC4899, #9D174D);"></div>
+                                <p>Rosa</p>
+                            </div>
+                            <div class="theme-option" data-theme='{"accent":"#EF4444","accentDark":"#991B1B","name":"Rojo"}'>
+                                <div class="theme-swatch" style="background: linear-gradient(135deg, #EF4444, #991B1B);"></div>
+                                <p>Rojo</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i data-lucide="type"></i> Texto del Footer</h3>
+                        <div class="footer-editor">
+                            <div class="footer-preview">
+                                <p id="footerPreviewText">© 2026 Jerovia - Consultorio Fonoaudiologico. Todos los derechos reservados.</p>
+                                <div class="footer-social-inputs">
+                                    <div class="form-group">
+                                        <label>URL Instagram</label>
+                                        <input type="url" id="field-footerInstagram" placeholder="https://instagram.com/...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL Facebook</label>
+                                        <input type="url" id="field-footerFacebook" placeholder="https://facebook.com/...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- SETTINGS -->

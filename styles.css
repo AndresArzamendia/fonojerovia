@@ -159,6 +159,7 @@ body {
 
 .nav-links a {
     display: inline-block;
+    position: relative;
     background-color: #ffffff;
     color: #1E4363;
     text-decoration: none;
@@ -172,11 +173,29 @@ body {
     white-space: nowrap;
 }
 
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.85;
+    transform: translateX(-50%);
+    transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .nav-links a:hover {
     background-color: var(--accent-color);
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.nav-links a:hover::after {
+    width: 55%;
 }
 
 /* Navbar info chips */
@@ -415,11 +434,33 @@ h1 {
     border: none;
     cursor: pointer;
     font-size: 0.95rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.btn:hover::after,
+.btn:active::after {
+    animation: rippleExpand 0.7s ease-out forwards;
 }
 
 .btn-primary {
     background: var(--accent-color);
     color: #ffffff;
+    animation: pulseGlow 3s ease-in-out infinite;
 }
 
 .btn-primary:hover {
@@ -431,6 +472,10 @@ h1 {
     border: 1px solid var(--border-color);
     color: var(--text-main);
     background: transparent;
+}
+
+.btn-secondary::after {
+    background: rgba(75, 156, 211, 0.3);
 }
 
 .btn-secondary:hover {
@@ -453,6 +498,32 @@ h1 {
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.bio-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent-color), var(--pastel-purple));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.bio-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 30px rgba(75, 156, 211, 0.14);
+}
+
+.bio-card:hover::before {
+    transform: scaleY(1);
+    box-shadow: 0 0 18px rgba(75, 156, 211, 0.55);
 }
 
 .bio-card h3 {
@@ -479,6 +550,15 @@ h1 {
 
 .stat-item {
     text-align: center;
+    padding: 0.75rem 0.5rem;
+    border-radius: 12px;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    background: var(--accent-glow);
+    box-shadow: 0 0 22px rgba(75, 156, 211, 0.28);
 }
 
 .stat-number {
@@ -486,6 +566,7 @@ h1 {
     font-weight: 800;
     color: var(--accent-color);
     font-family: var(--font-code);
+    display: inline-block;
 }
 
 .stat-label {
@@ -523,15 +604,19 @@ h1 {
 .timeline-content {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
+    border-left: 3px solid transparent;
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease;
 }
 
 .timeline-content:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.06),
+        -6px 0 18px rgba(75, 156, 211, 0.22);
+    border-left-color: var(--accent-color);
 }
 
 .timeline-date {
@@ -579,11 +664,40 @@ h1 {
     gap: 1rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    position: relative;
+    overflow: hidden;
 }
+
+.cert-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    transform: translateX(-101%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    background: var(--accent-color);
+}
+
+.cert-card:nth-child(6n+1)::after { background: var(--pastel-pink); }
+.cert-card:nth-child(6n+2)::after { background: var(--pastel-green); }
+.cert-card:nth-child(6n+3)::after { background: var(--pastel-yellow); }
+.cert-card:nth-child(6n+4)::after { background: var(--pastel-purple); }
+.cert-card:nth-child(6n+5)::after { background: var(--pastel-orange); }
+.cert-card:nth-child(6n+6)::after { background: var(--pastel-blue); }
 
 .cert-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.cert-card:hover::after {
+    transform: translateX(0);
+}
+
+.cert-card:hover .cert-icon {
+    animation: rotateIcon 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .cert-icon {
@@ -661,6 +775,19 @@ h1 {
 .service-card:nth-child(5)::before { background: var(--pastel-orange); }
 .service-card:nth-child(6)::before { background: var(--pastel-blue); }
 
+/* Shimmer light-sweep on hover */
+.service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
 .service-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 30px rgba(0,0,0,0.08);
@@ -682,6 +809,22 @@ h1 {
 .service-card:nth-child(4) .service-icon { background: rgba(221,160,221,0.2); color: #9b59b6; }
 .service-card:nth-child(5) .service-icon { background: rgba(255,211,182,0.2); color: #d4863a; }
 .service-card:nth-child(6) .service-icon { background: rgba(184,212,227,0.2); color: #3a7ca5; }
+
+.service-card:hover::after {
+    animation: shimmer 0.9s ease;
+}
+
+.service-icon,
+.service-icon i,
+.service-icon svg {
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-icon,
+.service-card:hover .service-icon i,
+.service-card:hover .service-icon svg {
+    animation: bounceIcon 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
 .service-card h3 {
     color: var(--accent-dark);
@@ -709,12 +852,40 @@ h1 {
     overflow: hidden;
     border: 3px solid var(--card-bg);
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     aspect-ratio: 4/3;
+    position: relative;
+}
+
+.gallery-item::after {
+    content: 'Ver más';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 1.1rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(to top, rgba(30, 67, 99, 0.7) 0%, rgba(30, 67, 99, 0.25) 45%, transparent 70%);
+    opacity: 0;
+    transform: translateY(35%);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
 }
 
 .gallery-item:hover {
-    transform: scale(1.03);
+    transform: scale(1.04) rotate(1deg);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.14);
+}
+
+.gallery-item:hover::after {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .gallery-item img {
@@ -783,6 +954,7 @@ h1 {
     box-shadow:
         0 4px 20px rgba(75, 156, 211, 0.08),
         0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    animation: pulseGlow 3.5s ease-in-out infinite;
 }
 
 .rating-number {
@@ -889,20 +1061,22 @@ h1 {
 #commentForm button[type="submit"] {
     align-self: flex-start;
     padding: 0.9rem 2.2rem;
-    background: linear-gradient(135deg, var(--accent-color), #3a8bc2);
+    background: linear-gradient(120deg, var(--accent-color), #3a8bc2, var(--accent-dark), #3a8bc2, var(--accent-color));
+    background-size: 250% auto;
+    background-position: 0% center;
     color: #ffffff;
     border: none;
     border-radius: 50px;
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 15px rgba(75, 156, 211, 0.3);
     letter-spacing: 0.3px;
 }
 
 #commentForm button[type="submit"]:hover {
-    background: linear-gradient(135deg, var(--accent-dark), #1a3a57);
+    animation: gradientShift 1.6s ease-in-out infinite alternate;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(30, 67, 99, 0.35);
 }
@@ -972,13 +1146,19 @@ h1 {
     font-family: Georgia, serif;
     line-height: 1;
     pointer-events: none;
+    transition: transform 0.35s ease, color 0.35s ease;
 }
 
 .review-card:hover {
-    transform: translateY(-4px);
+    animation: tiltCard 0.6s ease forwards;
     box-shadow:
-        0 12px 40px rgba(75, 156, 211, 0.1),
+        0 12px 40px rgba(75, 156, 211, 0.12),
         0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.review-card:hover::after {
+    color: rgba(75, 156, 211, 0.3);
+    transform: scale(1.2) rotate(-8deg);
 }
 
 .review-header {
@@ -1096,20 +1276,38 @@ h1 {
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     text-decoration: none;
     color: inherit;
+    position: relative;
 }
 
 .info-card.clickable-card {
     cursor: pointer;
 }
 
-.info-card.clickable-card:hover {
+.info-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-radius: 14px 0 0 14px;
+    background: linear-gradient(180deg, var(--accent-color), var(--pastel-blue));
+    transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.info-card:hover {
     transform: translateX(6px);
     box-shadow: 0 6px 20px rgba(75, 156, 211, 0.1);
     border-color: rgba(75, 156, 211, 0.2);
+}
+
+.info-card:hover::before {
+    width: 4px;
+    box-shadow: 0 0 14px rgba(75, 156, 211, 0.5);
 }
 
 .info-card h4 {
@@ -1208,6 +1406,17 @@ h1 {
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
 }
 
+.whatsapp-float::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(37, 211, 102, 0.65);
+    animation: pulseRing 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
 .whatsapp-float:hover {
     transform: scale(1.12);
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.55);
@@ -1267,6 +1476,12 @@ footer p {
     color: #fff;
     border-color: var(--accent-color);
     transform: translateY(-3px);
+}
+
+.footer-links a:hover i,
+.footer-links a:hover svg {
+    display: inline-block;
+    animation: rotateIcon 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .footer-links a i {
@@ -1453,6 +1668,172 @@ footer p {
 .toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+}
+
+/* =========================================
+   ENHANCED ANIMATIONS (KEYFRAMES & STAGGER)
+   ========================================= */
+
+/* Section title text-shimmer (gradient clip) */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .section-title {
+        background-image: linear-gradient(110deg,
+            var(--accent-dark) 25%,
+            var(--accent-color) 40%,
+            #9b59b6 50%,
+            var(--accent-color) 60%,
+            var(--accent-dark) 75%);
+        background-size: 220% auto;
+        background-repeat: no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textShimmer 8s linear infinite;
+    }
+
+    .section-title i,
+    .section-title svg {
+        -webkit-text-fill-color: currentColor;
+        color: var(--accent-color);
+    }
+}
+
+/* Hero badge gentle float */
+.badge-card {
+    animation: floatBob 4s ease-in-out infinite;
+}
+
+/* --- Enhanced stagger entrance system ---
+   Cards animate in sequentially when their parent
+   section gets .visible. Supports --i custom property:
+   <div class="cert-card" style="--i:3"> for manual order. */
+.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > * {
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(2) { animation-delay: 90ms; }
+.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(3) { animation-delay: 180ms; }
+.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(4) { animation-delay: 270ms; }
+.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(5) { animation-delay: 360ms; }
+.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(n+6) { animation-delay: 450ms; }
+
+/* Timeline items staggered entrance */
+.section-anim.visible .timeline-item {
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.section-anim.visible .timeline-item:nth-child(2) { animation-delay: 100ms; }
+.section-anim.visible .timeline-item:nth-child(3) { animation-delay: 200ms; }
+.section-anim.visible .timeline-item:nth-child(4) { animation-delay: 300ms; }
+.section-anim.visible .timeline-item:nth-child(5) { animation-delay: 400ms; }
+.section-anim.visible .timeline-item:nth-child(n+6) { animation-delay: 500ms; }
+
+/* Stat numbers pop like counters when visible */
+.section-anim.visible .stat-item .stat-number {
+    animation: bounceIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+.section-anim.visible .stat-item:nth-child(1) .stat-number { animation-delay: 150ms; }
+.section-anim.visible .stat-item:nth-child(2) .stat-number { animation-delay: 350ms; }
+.section-anim.visible .stat-item:nth-child(3) .stat-number { animation-delay: 550ms; }
+
+/* --- Keyframes --- */
+
+@keyframes shimmer {
+    0% { left: -75%; }
+    100% { left: 130%; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 4px 15px rgba(75, 156, 211, 0.25); }
+    50% { box-shadow: 0 4px 28px rgba(75, 156, 211, 0.5); }
+}
+
+@keyframes rippleExpand {
+    0% { width: 0; height: 0; opacity: 0.5; }
+    100% { width: 320%; height: 320%; opacity: 0; }
+}
+
+@keyframes bounceIcon {
+    0%, 100% { transform: scale(1); }
+    35% { transform: scale(1.18); }
+    70% { transform: scale(0.94); }
+}
+
+@keyframes rotateIcon {
+    0% { transform: rotate(0deg) scale(1); }
+    55% { transform: rotate(200deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes borderGrow {
+    from { width: 0; }
+    to { width: 4px; }
+}
+
+@keyframes slideOverlay {
+    from { opacity: 0; transform: translateY(35%); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseRing {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.7); opacity: 0; }
+}
+
+@keyframes textShimmer {
+    0% { background-position: 220% center; }
+    100% { background-position: -220% center; }
+}
+
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.4); }
+    55% { opacity: 1; transform: scale(1.12); }
+    75% { transform: scale(0.96); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+@keyframes tiltCard {
+    0% { transform: translateY(-4px) perspective(900px) rotateX(0deg) rotateY(0deg); }
+    40% { transform: translateY(-4px) perspective(900px) rotateX(2.5deg) rotateY(-3deg); }
+    100% { transform: translateY(-4px) perspective(900px) rotateX(0deg) rotateY(0deg); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 100% center; }
+}
+
+/* Accessibility: tone down decorative motion */
+@media (prefers-reduced-motion: reduce) {
+    .bg-glow,
+    .shape,
+    .ticker-track,
+    .btn-primary,
+    .rating-box,
+    .badge-card,
+    .section-title {
+        animation: none !important;
+    }
+
+    .whatsapp-float::before {
+        display: none;
+    }
+
+    .review-card:hover {
+        animation: none;
+    }
 }
 
 /* =========================================

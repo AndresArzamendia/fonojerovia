@@ -117,11 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
             siteData = defaults;
             saveData();
         } else {
-            siteData = { personal: {}, education: [], experience: [], certifications: [], services: [], gallery: [], testimonials: [] };
+            siteData = { personal: {}, education: [], experience: [], certifications: [], services: [], gallery: [], testimonials: [], visibility: {}, theme: {} };
         }
         populateForm();
         renderLists();
         updateSyncStatus(cloudResult);
+        updateLogoPreview();
+        populateVisibility();
+        populateTheme();
+        populateFooter();
     }
 
     async function saveData() {
@@ -218,6 +222,126 @@ document.addEventListener('DOMContentLoaded', () => {
 
         saveData();
         showToast('Cambios guardados correctamente', 'success');
+    });
+
+    // =========================================
+    // LOGO UPLOAD
+    // =========================================
+    const logoInput = document.getElementById('logoInput');
+    const logoPreview = document.getElementById('logoPreview');
+    const logoPlaceholder = document.getElementById('logoPlaceholder');
+
+    function updateLogoPreview() {
+        const p = siteData.personal || {};
+        if (p.siteLogo) {
+            if (logoPreview) {
+                logoPreview.innerHTML = `<img src="${p.siteLogo}" alt="Logo">`;
+            }
+        } else {
+            if (logoPreview) {
+                logoPreview.innerHTML = `<span class="logo-placeholder" id="logoPlaceholder">J</span>`;
+            }
+        }
+    }
+
+    if (logoInput) {
+        logoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('La imagen es muy grande. Maximo 2MB.', 'error');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                if (!siteData.personal) siteData.personal = {};
+                siteData.personal.siteLogo = ev.target.result;
+                saveData();
+                updateLogoPreview();
+                showToast('Logo actualizado', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    const removeLogoBtn = document.getElementById('removeLogoBtn');
+    if (removeLogoBtn) {
+        removeLogoBtn.addEventListener('click', () => {
+            if (!siteData.personal) siteData.personal = {};
+            siteData.personal.siteLogo = '';
+            saveData();
+            updateLogoPreview();
+            showToast('Logo eliminado', 'success');
+        });
+    }
+
+    // =========================================
+    // VISIBILITY TOGGLES
+    // =========================================
+    function populateVisibility() {
+        const vis = siteData.visibility || {};
+        document.querySelectorAll('[data-section-vis]').forEach(toggle => {
+            const sec = toggle.dataset.sectionVis;
+            toggle.checked = vis[sec] !== false;
+        });
+    }
+
+    document.querySelectorAll('[data-section-vis]').forEach(toggle => {
+        toggle.addEventListener('change', () => {
+            if (!siteData.visibility) siteData.visibility = {};
+            siteData.visibility[toggle.dataset.sectionVis] = toggle.checked;
+            saveData();
+            showToast('Visibilidad actualizada', 'success');
+        });
+    });
+
+    // =========================================
+    // THEME PICKER
+    // =========================================
+    function populateTheme() {
+        const theme = siteData.theme || {};
+        const activeName = theme.name || 'Azul Original';
+        document.querySelectorAll('.theme-option').forEach(opt => {
+            const data = JSON.parse(opt.dataset.theme || '{}');
+            opt.classList.toggle('active', data.name === activeName);
+        });
+    }
+
+    document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            const data = JSON.parse(opt.dataset.theme || '{}');
+            siteData.theme = { accent: data.accent, accentDark: data.accentDark, name: data.name };
+            document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+            saveData();
+            showToast('Tema actualizado: ' + data.name, 'success');
+        });
+    });
+
+    // =========================================
+    // FOOTER EDITOR
+    // =========================================
+    function populateFooter() {
+        const p = siteData.personal || {};
+        setVal('field-footerInstagram', p.instagram);
+        setVal('field-footerFacebook', p.facebook);
+        const previewEl = document.getElementById('footerPreviewText');
+        if (previewEl) {
+            previewEl.textContent = p.footerText || '© 2026 Jerovia - Consultorio Fonoaudiologico. Todos los derechos reservados.';
+        }
+    }
+
+    const footerInstagram = document.getElementById('field-footerInstagram');
+    const footerFacebook = document.getElementById('field-footerFacebook');
+    if (footerInstagram) footerInstagram.addEventListener('change', () => {
+        if (!siteData.personal) siteData.personal = {};
+        siteData.personal.instagram = footerInstagram.value.trim();
+        saveData();
+    });
+    if (footerFacebook) footerFacebook.addEventListener('change', () => {
+        if (!siteData.personal) siteData.personal = {};
+        siteData.personal.facebook = footerFacebook.value.trim();
+        saveData();
     });
 
     // =========================================
