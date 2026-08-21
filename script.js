@@ -5,6 +5,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('loader-wrapper');
     if (loader) setTimeout(() => loader.classList.add('loader-hidden'), 3500);
 
+    // Generate splash particles
+    const splashParticles = document.getElementById('splashParticles');
+    if (splashParticles) {
+        const particleColors = ['#FFB6C1', '#A8E6CF', '#FFEAA7', '#DDA0DD', '#FFD3B6', '#B8D4E3', '#4B9CD3'];
+        for (let i = 0; i < 18; i++) {
+            const p = document.createElement('div');
+            p.className = 'splash-particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.background = particleColors[i % particleColors.length];
+            p.style.width = (4 + Math.random() * 6) + 'px';
+            p.style.height = p.style.width;
+            p.style.animationDuration = (2.5 + Math.random() * 3) + 's';
+            p.style.animationDelay = (Math.random() * 3) + 's';
+            splashParticles.appendChild(p);
+        }
+    }
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navBtns = document.querySelectorAll('.nav-links a');
+    function updateActiveNav() {
+        const scrollY = window.scrollY + 120;
+        let current = '';
+        sections.forEach(sec => {
+            if (sec.offsetTop <= scrollY) current = sec.getAttribute('id');
+        });
+        navBtns.forEach(btn => {
+            btn.classList.remove('active-nav');
+            if (btn.getAttribute('href') === '#' + current) btn.classList.add('active-nav');
+        });
+    }
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+
     // Mobile menu
     const mobileBtn = document.getElementById('mobileMenuBtn');
     const navLinks = document.getElementById('navLinks');
