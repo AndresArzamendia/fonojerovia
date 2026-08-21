@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
     const loader = document.getElementById('loader-wrapper');
-    if (loader) setTimeout(() => loader.classList.add('loader-hidden'), 300);
+    if (loader) setTimeout(() => loader.classList.add('loader-hidden'), 3500);
 
     // Mobile menu
     const mobileBtn = document.getElementById('mobileMenuBtn');
@@ -166,6 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const logoEl = document.getElementById('siteLogo');
         if (logoEl && p.siteLogo) {
             logoEl.src = p.siteLogo;
+        }
+        const splashLogoEl = document.getElementById('splashLogoImg');
+        if (splashLogoEl && p.siteLogo) {
+            splashLogoEl.src = p.siteLogo;
         }
     }
 
