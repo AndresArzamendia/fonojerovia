@@ -1718,8 +1718,8 @@ footer p {
    ========================================= */
 .section-anim {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .section-anim.visible {
@@ -2027,42 +2027,128 @@ footer p {
     animation: floatBob 4s ease-in-out infinite;
 }
 
-/* --- Enhanced stagger entrance system ---
-   Cards animate in sequentially when their parent
-   section gets .visible. Supports --i custom property:
-   <div class="cert-card" style="--i:3"> for manual order. */
-.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > * {
-    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-    animation-delay: calc(var(--i, 0) * 90ms);
+/* =========================================
+   STAGGERED SECTION ENTRANCE SYSTEM
+   ========================================= */
+
+/* --- About grid: slide from left/right --- */
+.section-anim.visible .about-grid > *:nth-child(1) {
+    animation: slideFromLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+}
+.section-anim.visible .about-grid > *:nth-child(2) {
+    animation: slideFromRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards;
 }
 
-.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(2) { animation-delay: 90ms; }
-.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(3) { animation-delay: 180ms; }
-.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(4) { animation-delay: 270ms; }
-.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(5) { animation-delay: 360ms; }
-.section-anim.visible :is(.about-grid, .cert-grid, .services-grid, .gallery-grid, .contact-info-cards) > *:nth-child(n+6) { animation-delay: 450ms; }
+/* --- Cert cards: rotate + scale in --- */
+.section-anim.visible .cert-grid > * {
+    animation: certCardIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.section-anim.visible .cert-grid > *:nth-child(1) { animation-delay: 0.1s; }
+.section-anim.visible .cert-grid > *:nth-child(2) { animation-delay: 0.22s; }
+.section-anim.visible .cert-grid > *:nth-child(3) { animation-delay: 0.34s; }
+.section-anim.visible .cert-grid > *:nth-child(4) { animation-delay: 0.46s; }
+.section-anim.visible .cert-grid > *:nth-child(5) { animation-delay: 0.58s; }
+.section-anim.visible .cert-grid > *:nth-child(6) { animation-delay: 0.7s; }
+.section-anim.visible .cert-grid > *:nth-child(n+7) { animation-delay: 0.82s; }
 
-/* Timeline items staggered entrance */
+/* --- Service cards: pop up with bounce --- */
+.section-anim.visible .services-grid > * {
+    animation: serviceCardIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+.section-anim.visible .services-grid > *:nth-child(1) { animation-delay: 0.1s; }
+.section-anim.visible .services-grid > *:nth-child(2) { animation-delay: 0.22s; }
+.section-anim.visible .services-grid > *:nth-child(3) { animation-delay: 0.34s; }
+.section-anim.visible .services-grid > *:nth-child(4) { animation-delay: 0.46s; }
+.section-anim.visible .services-grid > *:nth-child(5) { animation-delay: 0.58s; }
+.section-anim.visible .services-grid > *:nth-child(6) { animation-delay: 0.7s; }
+.section-anim.visible .services-grid > *:nth-child(n+7) { animation-delay: 0.82s; }
+
+/* --- Gallery items: scale in --- */
+.section-anim.visible .gallery-grid > * {
+    animation: galleryItemIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.section-anim.visible .gallery-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.section-anim.visible .gallery-grid > *:nth-child(2) { animation-delay: 0.15s; }
+.section-anim.visible .gallery-grid > *:nth-child(3) { animation-delay: 0.25s; }
+.section-anim.visible .gallery-grid > *:nth-child(4) { animation-delay: 0.35s; }
+.section-anim.visible .gallery-grid > *:nth-child(5) { animation-delay: 0.45s; }
+.section-anim.visible .gallery-grid > *:nth-child(6) { animation-delay: 0.55s; }
+.section-anim.visible .gallery-grid > *:nth-child(n+7) { animation-delay: 0.65s; }
+
+/* --- Contact info cards: slide from left --- */
+.section-anim.visible .contact-info-cards > * {
+    animation: slideFromLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.section-anim.visible .contact-info-cards > *:nth-child(1) { animation-delay: 0.1s; }
+.section-anim.visible .contact-info-cards > *:nth-child(2) { animation-delay: 0.22s; }
+.section-anim.visible .contact-info-cards > *:nth-child(3) { animation-delay: 0.34s; }
+.section-anim.visible .contact-info-cards > *:nth-child(4) { animation-delay: 0.46s; }
+
+/* --- Contact form card: slide from right --- */
+.section-anim.visible .contact-form-card {
+    animation: slideFromRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
+}
+
+/* --- Timeline items: slide from left --- */
 .section-anim.visible .timeline-item {
-    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation: timelineItemIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
+.section-anim.visible .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.section-anim.visible .timeline-item:nth-child(2) { animation-delay: 0.25s; }
+.section-anim.visible .timeline-item:nth-child(3) { animation-delay: 0.4s; }
+.section-anim.visible .timeline-item:nth-child(4) { animation-delay: 0.55s; }
+.section-anim.visible .timeline-item:nth-child(5) { animation-delay: 0.7s; }
+.section-anim.visible .timeline-item:nth-child(n+6) { animation-delay: 0.85s; }
 
-.section-anim.visible .timeline-item:nth-child(2) { animation-delay: 100ms; }
-.section-anim.visible .timeline-item:nth-child(3) { animation-delay: 200ms; }
-.section-anim.visible .timeline-item:nth-child(4) { animation-delay: 300ms; }
-.section-anim.visible .timeline-item:nth-child(5) { animation-delay: 400ms; }
-.section-anim.visible .timeline-item:nth-child(n+6) { animation-delay: 500ms; }
-
-/* Stat numbers pop like counters when visible */
+/* --- Stats: counter pop --- */
 .section-anim.visible .stat-item .stat-number {
     animation: bounceIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
+.section-anim.visible .stat-item:nth-child(1) .stat-number { animation-delay: 0.15s; }
+.section-anim.visible .stat-item:nth-child(2) .stat-number { animation-delay: 0.35s; }
+.section-anim.visible .stat-item:nth-child(3) .stat-number { animation-delay: 0.55s; }
 
-.section-anim.visible .stat-item:nth-child(1) .stat-number { animation-delay: 150ms; }
-.section-anim.visible .stat-item:nth-child(2) .stat-number { animation-delay: 350ms; }
-.section-anim.visible .stat-item:nth-child(3) .stat-number { animation-delay: 550ms; }
+/* --- Reviews box: scale in --- */
+.section-anim.visible .reviews-summary {
+    animation: scaleIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
+}
+.section-anim.visible .add-review-box {
+    animation: scaleIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s backwards;
+}
 
-/* --- Keyframes --- */
+/* =========================================
+   KEYFRAMES
+   ========================================= */
+
+@keyframes slideFromLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideFromRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes certCardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.92) rotate(-2deg); }
+    to { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+@keyframes serviceCardIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.85); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes galleryItemIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes timelineItemIn {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
 
 @keyframes shimmer {
     0% { left: -75%; }
