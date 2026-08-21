@@ -79,33 +79,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const cloudResult = await sbLoad('main');
         const cloudData = cloudResult.ok ? cloudResult.data : null;
 
+        const galleryResult = await sbLoad('gallery');
+        const cloudGallery = galleryResult.ok && galleryResult.data ? galleryResult.data : null;
+
+        const reviewsResult = await sbLoad('reviews');
+        const cloudReviews = reviewsResult.ok && reviewsResult.data ? reviewsResult.data : null;
+
+        const photoResult = await sbLoad('profile_photo');
+        const cloudPhoto = photoResult.ok && photoResult.data ? photoResult.data : null;
+
+        const logoResult = await sbLoad('site_logo');
+        const cloudLogo = logoResult.ok && logoResult.data ? logoResult.data : null;
+
         const saved = localStorage.getItem('jerovia_data');
 
         if (cloudData && defaults) {
             siteData = deepMerge(defaults, cloudData);
-            if (saved) {
-                const local = JSON.parse(saved);
-                if (local.personal && local.personal.photo) {
-                    if (!siteData.personal) siteData.personal = {};
-                    siteData.personal.photo = local.personal.photo;
-                }
-                if (local.gallery && local.gallery.length > 0) {
-                    siteData.gallery = local.gallery;
-                }
-            }
             saveData();
         } else if (cloudData) {
             siteData = cloudData;
-            if (saved) {
-                const local = JSON.parse(saved);
-                if (local.personal && local.personal.photo) {
-                    if (!siteData.personal) siteData.personal = {};
-                    siteData.personal.photo = local.personal.photo;
-                }
-                if (local.gallery && local.gallery.length > 0) {
-                    siteData.gallery = local.gallery;
-                }
-            }
             saveData();
         } else if (saved && defaults) {
             const savedData = JSON.parse(saved);
@@ -119,6 +111,23 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             siteData = { personal: {}, education: [], experience: [], certifications: [], services: [], gallery: [], testimonials: [], visibility: {}, theme: {} };
         }
+
+        if (cloudGallery && cloudGallery.length > 0) {
+            siteData.gallery = cloudGallery;
+        }
+        if (cloudReviews && cloudReviews.length > 0) {
+            siteData.testimonials = cloudReviews;
+        }
+        if (cloudPhoto) {
+            if (!siteData.personal) siteData.personal = {};
+            siteData.personal.photo = cloudPhoto;
+        }
+        if (cloudLogo) {
+            if (!siteData.personal) siteData.personal = {};
+            siteData.personal.siteLogo = cloudLogo;
+        }
+
+        localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         populateForm();
         renderLists();
         updateSyncStatus(cloudResult);
@@ -245,20 +254,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (logoInput) {
-        logoInput.addEventListener('change', (e) => {
+        logoInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
             if (file.size > 2 * 1024 * 1024) {
                 showToast('La imagen es muy grande. Maximo 2MB.', 'error');
                 return;
             }
+            showToast('Comprimiendo logo...', 'success');
             const reader = new FileReader();
-            reader.onload = (ev) => {
+            reader.onload = async (ev) => {
+                const compressed = await sbCompressImage(ev.target.result, 200, 0.6);
                 if (!siteData.personal) siteData.personal = {};
-                siteData.personal.siteLogo = ev.target.result;
+                siteData.personal.siteLogo = compressed;
                 saveData();
                 updateLogoPreview();
-                showToast('Logo actualizado', 'success');
+                const result = await sbSave('site_logo', compressed);
+                updateSyncStatus(result);
+                showToast('Logo actualizado y sincronizado', 'success');
             };
             reader.readAsDataURL(file);
         });
@@ -266,11 +279,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const removeLogoBtn = document.getElementById('removeLogoBtn');
     if (removeLogoBtn) {
-        removeLogoBtn.addEventListener('click', () => {
+        removeLogoBtn.addEventListener('click', async () => {
             if (!siteData.personal) siteData.personal = {};
             siteData.personal.siteLogo = '';
             saveData();
             updateLogoPreview();
+            await sbDelete(['site_logo']);
             showToast('Logo eliminado', 'success');
         });
     }
@@ -533,6 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirm('Eliminar este elemento?')) return;
         siteData[category].splice(index, 1);
         saveData();
+        if (category === 'testimonials') syncReviewsToCloud();
         renderLists();
         showToast('Elemento eliminado', 'success');
     };
@@ -586,6 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirm('Eliminar esta foto?')) return;
         siteData.gallery.splice(index, 1);
         saveData();
+        syncGalleryToCloud();
         renderGalleryList();
         showToast('Foto eliminada', 'success');
     };
@@ -670,40 +686,53 @@ document.addEventListener('DOMContentLoaded', () => {
             values.rating = parseInt(values.rating, 10);
             siteData.testimonials.push(values);
             saveData();
+            syncReviewsToCloud();
             renderTestimonialsList();
             showToast('Testimonio agregado', 'success');
         });
     });
 
     // =========================================
-    // PHOTO UPLOAD
+    // CLOUD SYNC FOR REVIEWS
+    // =========================================
+    async function syncReviewsToCloud() {
+        const reviews = siteData.testimonials || [];
+        const result = await sbSave('reviews', reviews);
+        updateSyncStatus(result);
+    }
+
+    // =========================================
+    // PHOTO UPLOAD (compressed)
     // =========================================
     const photoInput = document.getElementById('photoInput');
     const previewImg = document.getElementById('previewImg');
 
     if (photoInput) {
-        photoInput.addEventListener('change', (e) => {
+        photoInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            if (file.size > 3 * 1024 * 1024) {
-                showToast('La imagen es muy grande. Maximo 3MB.', 'error');
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('La imagen es muy grande. Maximo 5MB.', 'error');
                 return;
             }
+            showToast('Comprimiendo imagen...', 'success');
             const reader = new FileReader();
-            reader.onload = (ev) => {
-                const base64 = ev.target.result;
-                previewImg.src = base64;
+            reader.onload = async (ev) => {
+                const compressed = await sbCompressImage(ev.target.result, 600, 0.5);
+                previewImg.src = compressed;
                 if (!siteData.personal) siteData.personal = {};
-                siteData.personal.photo = base64;
+                siteData.personal.photo = compressed;
                 saveData();
-                showToast('Foto de perfil actualizada', 'success');
+                const photoResult = await sbSave('profile_photo', compressed);
+                updateSyncStatus(photoResult);
+                showToast('Foto de perfil actualizada y sincronizada', 'success');
             };
             reader.readAsDataURL(file);
         });
     }
 
     // =========================================
-    // GALLERY UPLOAD
+    // GALLERY UPLOAD (compressed)
     // =========================================
     const galleryInput = document.getElementById('galleryInput');
 
@@ -713,21 +742,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!files.length) return;
             if (!siteData.gallery) siteData.gallery = [];
 
+            showToast(`Comprimiendo ${files.length} foto(s)...`, 'success');
             let processed = 0;
             files.forEach(file => {
-                if (file.size > 3 * 1024 * 1024) {
-                    showToast(`"${file.name}" es muy grande. Maximo 3MB.`, 'error');
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast(`"${file.name}" es muy grande. Maximo 5MB.`, 'error');
                     processed++;
                     return;
                 }
                 const reader = new FileReader();
-                reader.onload = (ev) => {
-                    siteData.gallery.push(ev.target.result);
+                reader.onload = async (ev) => {
+                    const compressed = await sbCompressImage(ev.target.result, 600, 0.45);
+                    siteData.gallery.push(compressed);
                     processed++;
                     if (processed === files.length) {
                         saveData();
+                        syncGalleryToCloud();
                         renderGalleryList();
-                        showToast(`${files.length} foto(s) agregada(s)`, 'success');
+                        showToast(`${files.length} foto(s) comprimida(s) y agregada(s)`, 'success');
                     }
                 };
                 reader.readAsDataURL(file);
@@ -735,6 +767,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             galleryInput.value = '';
         });
+    }
+
+    async function syncGalleryToCloud() {
+        const result = await sbSave('gallery', siteData.gallery || []);
+        updateSyncStatus(result);
     }
 
     // =========================================
@@ -773,7 +810,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirm('Seguro que quieres restablecer todos los datos? Esto no se puede deshacer.')) return;
         localStorage.removeItem('jerovia_data');
         localStorage.removeItem('jerovia_reviews');
-        sbDelete(['main', 'reviews']);
+        sbDelete(['main', 'reviews', 'gallery', 'profile_photo', 'site_logo']);
         showToast('Datos restablecidos. Recarga la pagina.', 'success');
         setTimeout(() => location.reload(), 1500);
     });

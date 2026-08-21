@@ -85,29 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (cloudData && defaults) {
             siteData = deepMerge(defaults, cloudData);
-            if (saved) {
-                const local = JSON.parse(saved);
-                if (local.personal && local.personal.photo) {
-                    if (!siteData.personal) siteData.personal = {};
-                    siteData.personal.photo = local.personal.photo;
-                }
-                if (local.gallery && local.gallery.length > 0 && (!siteData.gallery || siteData.gallery.length === 0)) {
-                    siteData.gallery = local.gallery;
-                }
-            }
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         } else if (cloudData) {
             siteData = cloudData;
-            if (saved) {
-                const local = JSON.parse(saved);
-                if (local.personal && local.personal.photo) {
-                    if (!siteData.personal) siteData.personal = {};
-                    siteData.personal.photo = local.personal.photo;
-                }
-                if (local.gallery && local.gallery.length > 0) {
-                    siteData.gallery = local.gallery;
-                }
-            }
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         } else if (saved && defaults) {
             const savedData = JSON.parse(saved);
@@ -120,15 +100,49 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         }
 
+        await Promise.all([
+            syncGalleryFromCloud(),
+            syncReviewsFromCloud(),
+            syncPhotoFromCloud(),
+            syncLogoFromCloud()
+        ]);
+
         renderAll();
-        syncReviewsFromCloud();
+    }
+
+    async function syncGalleryFromCloud() {
+        const result = await sbLoad('gallery');
+        if (result.ok && result.data && Array.isArray(result.data) && result.data.length > 0) {
+            if (!siteData) siteData = {};
+            siteData.gallery = result.data;
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        }
     }
 
     async function syncReviewsFromCloud() {
         const result = await sbLoad('reviews');
-        if (result.ok && result.data) {
+        if (result.ok && result.data && Array.isArray(result.data)) {
             localStorage.setItem('jerovia_reviews', JSON.stringify(result.data));
-            renderTestimonials();
+        }
+    }
+
+    async function syncPhotoFromCloud() {
+        const result = await sbLoad('profile_photo');
+        if (result.ok && result.data) {
+            if (!siteData) siteData = {};
+            if (!siteData.personal) siteData.personal = {};
+            siteData.personal.photo = result.data;
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
+        }
+    }
+
+    async function syncLogoFromCloud() {
+        const result = await sbLoad('site_logo');
+        if (result.ok && result.data) {
+            if (!siteData) siteData = {};
+            if (!siteData.personal) siteData.personal = {};
+            siteData.personal.siteLogo = result.data;
+            localStorage.setItem('jerovia_data', JSON.stringify(siteData));
         }
     }
 
@@ -333,8 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTestimonials() {
         const track = document.getElementById('tickerTrack');
         if (!track) return;
-        const testimonials = siteData.testimonials || [];
-        if (testimonials.length === 0) return;
 
         const createCard = (t) => {
             const initial = t.name ? t.name.charAt(0).toUpperCase() : 'U';
@@ -354,12 +366,24 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         };
 
-        const savedReviews = JSON.parse(localStorage.getItem('jerovia_reviews')) || [];
-        const allTestimonials = [...savedReviews, ...testimonials];
+        const cloudReviews = JSON.parse(localStorage.getItem('jerovia_reviews')) || [];
+        const siteReviews = (siteData && siteData.testimonials) || [];
+
+        const seen = new Set();
+        const merged = [];
+        [...cloudReviews, ...siteReviews].forEach(r => {
+            const key = (r.name || '') + '|' + (r.text || '') + '|' + (r.role || '');
+            if (!seen.has(key)) {
+                seen.add(key);
+                merged.push(r);
+            }
+        });
+
+        if (merged.length === 0) return;
 
         let group1 = '';
         let group2 = '';
-        allTestimonials.forEach(t => {
+        merged.forEach(t => {
             group1 += createCard(t);
             group2 += createCard(t);
         });

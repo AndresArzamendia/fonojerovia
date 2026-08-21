@@ -10,10 +10,35 @@ try {
     console.error('Error inicializando Supabase:', e);
 }
 
+function sbCompressImage(dataUrl, maxWidth, quality) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+                h = Math.round((h * maxWidth) / w);
+                w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality || 0.5));
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+    });
+}
+
 function sbStripLargeData(obj) {
     if (!obj || typeof obj !== 'object') return obj;
     const copy = JSON.parse(JSON.stringify(obj));
-    if (copy.personal) copy.personal.photo = '';
+    if (copy.personal) {
+        copy.personal.photo = '';
+        copy.personal.siteLogo = '';
+    }
     copy.gallery = [];
     return copy;
 }
@@ -45,7 +70,9 @@ async function sbLoad(id) {
             .eq('id', id)
             .single();
         if (error) {
-            console.error('Supabase load error [' + id + ']:', error.message);
+            if (error.code !== 'PGRST116') {
+                console.error('Supabase load error [' + id + ']:', error.message);
+            }
             return { ok: false, data: null, error: error.message };
         }
         return { ok: true, data: data ? data.payload : null };
