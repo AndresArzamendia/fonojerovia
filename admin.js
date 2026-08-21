@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLogoPreview();
         populateVisibility();
         populateTheme();
+        populateSectionColors();
         populateFooter();
     }
 
@@ -329,6 +330,31 @@ document.addEventListener('DOMContentLoaded', () => {
             opt.classList.add('active');
             saveData();
             showToast('Tema actualizado: ' + data.name, 'success');
+        });
+    });
+
+    // =========================================
+    // SECTION COLORS
+    // =========================================
+    const sectionColorIds = { colorAbout: 'about', colorServices: 'services', colorCerts: 'certs', colorContact: 'contact' };
+
+    function populateSectionColors() {
+        const sc = siteData.sectionColors || {};
+        Object.keys(sectionColorIds).forEach(inputId => {
+            const el = document.getElementById(inputId);
+            if (el) el.value = sc[sectionColorIds[inputId]] || '#4B9CD3';
+        });
+    }
+
+    Object.keys(sectionColorIds).forEach(inputId => {
+        const el = document.getElementById(inputId);
+        if (el) el.addEventListener('input', () => {
+            if (!siteData.sectionColors) siteData.sectionColors = {};
+            siteData.sectionColors[sectionColorIds[inputId]] = el.value;
+            saveData();
+        });
+        if (el) el.addEventListener('change', () => {
+            showToast('Color de seccion actualizado', 'success');
         });
     });
 

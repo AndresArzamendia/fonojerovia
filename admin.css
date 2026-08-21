@@ -1255,6 +1255,62 @@ body {
     margin: 0;
 }
 
+/* SECTION COLORS */
+.section-colors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.section-color-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.section-color-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.section-color-item label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-main);
+}
+
+.section-color-item input[type="color"] {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 2px;
+    background: none;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.section-color-item input[type="color"]:hover {
+    border-color: var(--accent);
+    transform: scale(1.08);
+}
+
+.section-color-item input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.section-color-item input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
 /* FOOTER EDITOR */
 .footer-editor {
     display: flex;

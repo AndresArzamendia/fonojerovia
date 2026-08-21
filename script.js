@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderLogo();
         applyVisibility();
         applyTheme();
+        applySectionColors();
     }
 
     function renderLogo() {
@@ -224,6 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
         root.style.setProperty('--accent-color', theme.accent);
         root.style.setProperty('--accent-dark', theme.accentDark || '#1E4363');
         root.style.setProperty('--accent-glow', theme.accent + '26');
+    }
+
+    function applySectionColors() {
+        const sc = siteData.sectionColors || {};
+        const root = document.documentElement;
+        if (sc.about) root.style.setProperty('--section-about', sc.about);
+        if (sc.services) root.style.setProperty('--section-services', sc.services);
+        if (sc.certs) root.style.setProperty('--section-certs', sc.certs);
+        if (sc.contact) root.style.setProperty('--section-contact', sc.contact);
     }
 
     function renderPersonal() {
