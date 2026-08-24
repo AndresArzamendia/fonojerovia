@@ -34,11 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Active nav link on scroll
+    // Active nav link on scroll + progress bar
     const sections = document.querySelectorAll('section[id]');
     const navBtns = document.querySelectorAll('.nav-links a');
+    const scrollProgressBar = document.getElementById('scrollProgress');
     function updateActiveNav() {
         const scrollY = window.scrollY + 120;
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollProgressBar && docHeight > 0) {
+            scrollProgressBar.style.width = (scrollTop / docHeight * 100) + '%';
+        }
         let current = '';
         sections.forEach(sec => {
             if (sec.offsetTop <= scrollY) current = sec.getAttribute('id');
