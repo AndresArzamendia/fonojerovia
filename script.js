@@ -207,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderServices();
         renderGallery();
         renderTestimonials();
+        renderFAQ();
         renderLogo();
         applyVisibility();
         applyTheme();
@@ -491,6 +492,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
+    function renderFAQ() {
+        const container = document.getElementById('faqList');
+        if (!container) return;
+        const items = (siteData && siteData.faq) || [];
+        if (items.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:2rem 0;">No hay preguntas frecuentes disponibles.</p>';
+            return;
+        }
+        container.innerHTML = items.map(item => `
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>${item.question}</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>${item.answer}</p>
+                </div>
+            </div>
+        `).join('');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        container.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const wasActive = item.classList.contains('active');
+                container.querySelectorAll('.faq-item.active').forEach(a => a.classList.remove('active'));
+                if (!wasActive) item.classList.add('active');
+            });
+        });
+    }
+
     function setText(id, text) {
         const el = document.getElementById(id);
         if (el && text) el.textContent = text;
@@ -680,16 +712,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         startAutoScroll();
     }
-
-    // FAQ accordion
-    document.querySelectorAll('.faq-question').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const item = btn.closest('.faq-item');
-            const wasActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item.active').forEach(a => a.classList.remove('active'));
-            if (!wasActive) item.classList.add('active');
-        });
-    });
 
     // Appointment modal
     const apptModal = document.getElementById('appointmentModal');

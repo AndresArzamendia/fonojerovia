@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderLists();
         updateSyncStatus(cloudResult);
         updateLogoPreview();
+        updateSidebarLogo();
         populateVisibility();
         populateTheme();
         populateSectionColors();
@@ -254,6 +255,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function updateSidebarLogo() {
+        const p = siteData.personal || {};
+        const circle = document.getElementById('sidebarLogoCircle');
+        const link = document.getElementById('sidebarLogoLink');
+        if (link) link.href = 'index.html';
+        if (!circle) return;
+        if (p.siteLogo) {
+            circle.innerHTML = `<img src="${p.siteLogo}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+            circle.style.background = 'transparent';
+            circle.style.border = '2px solid rgba(75,156,211,0.3)';
+        } else {
+            circle.innerHTML = 'J';
+            circle.style.background = '';
+            circle.style.border = '';
+        }
+    }
+
     if (logoInput) {
         logoInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
@@ -270,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 siteData.personal.siteLogo = compressed;
                 saveData();
                 updateLogoPreview();
+                updateSidebarLogo();
                 const result = await sbSave('site_logo', compressed);
                 updateSyncStatus(result);
                 showToast('Logo actualizado y sincronizado', 'success');
@@ -285,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
             siteData.personal.siteLogo = '';
             saveData();
             updateLogoPreview();
+            updateSidebarLogo();
             await sbDelete(['site_logo']);
             showToast('Logo eliminado', 'success');
         });
@@ -424,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCertList();
         renderServicesList();
         renderTestimonialsList();
+        renderFaqList();
         renderGalleryList();
     }
 
@@ -546,6 +567,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
+    // FAQ
+    function renderFaqList() {
+        const container = document.getElementById('faqList');
+        if (!container) return;
+        const items = siteData.faq || [];
+        container.innerHTML = items.map((item, i) => `
+            <div class="list-item">
+                <div class="item-content">
+                    <h4>${item.question}</h4>
+                    <p>${item.answer}</p>
+                </div>
+                <div class="item-actions">
+                    <button onclick="editItem('faq', ${i})" title="Editar"><i data-lucide="pencil"></i></button>
+                    <button class="delete-btn" onclick="deleteItem('faq', ${i})" title="Eliminar"><i data-lucide="trash-2"></i></button>
+                </div>
+            </div>
+        `).join('');
+        if (items.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:1rem;">No hay preguntas frecuentes.</p>';
+        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
     // GALLERY
     function renderGalleryList() {
         const container = document.getElementById('galleryList');
@@ -611,6 +655,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     { key: 'title', label: 'Nombre del servicio', value: item.title },
                     { key: 'description', label: 'Descripcion', value: item.description, type: 'textarea' },
                     { key: 'icon', label: 'Icono (Lucide)', value: item.icon }
+                ];
+                break;
+            case 'faq':
+                fields = [
+                    { key: 'question', label: 'Pregunta', value: item.question },
+                    { key: 'answer', label: 'Respuesta', value: item.answer, type: 'textarea' }
                 ];
                 break;
         }
@@ -715,6 +765,21 @@ document.addEventListener('DOMContentLoaded', () => {
             syncReviewsToCloud();
             renderTestimonialsList();
             showToast('Testimonio agregado', 'success');
+        });
+    });
+
+    const addFaqBtn = document.getElementById('addFaqBtn');
+    if (addFaqBtn) addFaqBtn.addEventListener('click', () => {
+        openModal('Agregar Pregunta Frecuente', [
+            { key: 'question', label: 'Pregunta', placeholder: '¿Como funciona la terapia de lenguaje?' },
+            { key: 'answer', label: 'Respuesta', type: 'textarea', placeholder: 'Escribe la respuesta...' }
+        ], (values) => {
+            if (!siteData.faq) siteData.faq = [];
+            values.id = Date.now();
+            siteData.faq.push(values);
+            saveData();
+            renderFaqList();
+            showToast('Pregunta agregada', 'success');
         });
     });
 

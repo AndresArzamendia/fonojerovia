@@ -125,5 +125,37 @@
       "rating": 5,
       "text": "Muy agradecido por el acompañamiento y la dedicación en cada consulta."
     }
+  ],
+  "faq": [
+    {
+      "id": 1,
+      "question": "¿Cómo es la primera consulta?",
+      "answer": "En la primera consulta realizamos una evaluación inicial para conocer las necesidades del paciente, explicamos el proceso terapéutico y elaboramos un plan de tratamiento personalizado."
+    },
+    {
+      "id": 2,
+      "question": "¿Cuántas sesiones necesito?",
+      "answer": "La cantidad de sesiones depende de cada caso. Luego de la evaluación inicial, establecemos un plan con una cantidad estimada de sesiones y objetivos claros a alcanzar."
+    },
+    {
+      "id": 3,
+      "question": "¿Atienden obras sociales o seguros médicos?",
+      "answer": "Consultanos para verificar si trabajamos con tu obra social o seguro médico. Brindamos facturas y documentación necesaria para el reembolso."
+    },
+    {
+      "id": 4,
+      "question": "¿Realizan atención online?",
+      "answer": "Sí, ofrecemos sesiones de fonoaudiología de forma virtual para pacientes que no pueden asistir presencialmente al consultorio."
+    },
+    {
+      "id": 5,
+      "question": "¿A qué edades atienden?",
+      "answer": "Atendemos pacientes de todas las edades, desde recién nacidos hasta adultos. Cada rango de edad tiene sus propias particularidades que abordamos con enfoques adecuados."
+    },
+    {
+      "id": 6,
+      "question": "¿Cómo puedo agendar una cita?",
+      "answer": "Podés agendar tu cita a través de WhatsApp, por teléfono o completando el formulario de contacto en esta página. Te responderemos a la brevedad para coordinar tu turno."
+    }
   ]
 }

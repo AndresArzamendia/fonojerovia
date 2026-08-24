@@ -39,10 +39,10 @@
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <span class="sidebar-logo-circle">J</span>
+                <a href="index.html" class="sidebar-logo" id="sidebarLogoLink">
+                    <span class="sidebar-logo-circle" id="sidebarLogoCircle">J</span>
                     <span class="sidebar-brand">JEROVIA</span>
-                </div>
+                </a>
                 <button class="sidebar-close" id="sidebarClose"><i data-lucide="x"></i></button>
             </div>
             <nav class="sidebar-nav">
@@ -72,6 +72,9 @@
                 </a>
                 <a href="#" class="nav-item" data-section="sec-testimonials">
                     <i data-lucide="message-square"></i><span>Testimonios</span>
+                </a>
+                <a href="#" class="nav-item" data-section="sec-faq">
+                    <i data-lucide="help-circle"></i><span>Preguntas Frecuentes</span>
                 </a>
                 <a href="#" class="nav-item" data-section="sec-visibility">
                     <i data-lucide="eye"></i><span>Visibilidad</span>
@@ -301,6 +304,18 @@
                     </button>
                 </section>
 
+                <!-- FAQ -->
+                <section class="admin-section" id="sec-faq">
+                    <div class="section-header">
+                        <h2>Preguntas Frecuentes</h2>
+                        <p>Gestiona las preguntas y respuestas que se muestran en la pagina</p>
+                    </div>
+                    <div id="faqList" class="items-list"></div>
+                    <button class="add-item-btn" id="addFaqBtn">
+                        <i data-lucide="plus-circle"></i> Agregar pregunta
+                    </button>
+                </section>
+
                 <!-- VISIBILITY -->
                 <section class="admin-section" id="sec-visibility">
                     <div class="section-header">
@@ -335,6 +350,10 @@
                         <div class="visibility-item">
                             <span>Opiniones / Testimonios</span>
                             <label class="toggle-switch"><input type="checkbox" data-section-vis="opiniones" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="visibility-item">
+                            <span>Preguntas Frecuentes</span>
+                            <label class="toggle-switch"><input type="checkbox" data-section-vis="faq" checked><span class="toggle-slider"></span></label>
                         </div>
                         <div class="visibility-item">
                             <span>Contacto</span>
