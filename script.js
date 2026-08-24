@@ -656,6 +656,85 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Appointment modal
+    const apptModal = document.getElementById('appointmentModal');
+    const apptClose = document.getElementById('modalClose');
+    const apptForm = document.getElementById('appointmentForm');
+    const dateInput = document.getElementById('apptDate');
+
+    function openApptModal() {
+        if (apptModal) apptModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeApptModal() {
+        if (apptModal) apptModal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[href="#contacto"].btn-nav-cta, .btn-nav-cta, .btn-primary[href="#contacto"]').forEach(el => {
+        if (el.textContent.includes('Pedir') || el.textContent.includes('Agendar')) {
+            el.addEventListener('click', (e) => { e.preventDefault(); openApptModal(); });
+        }
+    });
+
+    if (apptClose) apptClose.addEventListener('click', closeApptModal);
+    if (apptModal) apptModal.addEventListener('click', (e) => { if (e.target === apptModal) closeApptModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeApptModal(); });
+
+    if (dateInput) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        dateInput.min = `${yyyy}-${mm}-${dd}`;
+    }
+
+    const dayNames = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+    if (apptForm) {
+        apptForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('apptName').value.trim();
+            const phone = document.getElementById('apptPhone').value.trim();
+            const email = document.getElementById('apptEmail').value.trim();
+            const day = document.getElementById('apptDay').value;
+            const dateVal = document.getElementById('apptDate').value;
+            const time = document.getElementById('apptTime').value;
+            const message = document.getElementById('apptMessage').value.trim();
+
+            if (!name || !phone || !day || !dateVal || !time || !message) return;
+
+            let dateFormatted = dateVal;
+            const dateObj = new Date(dateVal + 'T12:00:00');
+            if (!isNaN(dateObj)) {
+                const dayOfWeek = dayNames[dateObj.getDay()];
+                const dd = String(dateObj.getDate()).padStart(2, '0');
+                const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const yyyy = dateObj.getFullYear();
+                dateFormatted = `${dayOfWeek} ${dd}/${mm}/${yyyy}`;
+            }
+
+            const timeFormatted = time.replace(':', ':');
+
+            const waNum = '595976220370';
+            const text = encodeURIComponent(
+                `Hola, me comunico desde la pagina web de Jerovia.\n\n` +
+                `*Nombre:* ${name}\n` +
+                `*Telefono:* ${phone}\n` +
+                (email ? `*Email:* ${email}\n` : '') +
+                `\n*--- Horario Preferido ---*\n` +
+                `*Dia de la semana:* ${day}\n` +
+                `*Fecha:* ${dateFormatted}\n` +
+                `*Hora:* ${timeFormatted}\n\n` +
+                `*Consulta:*\n${message}\n\n` +
+                `_Nota: El horario sera confirmado segun disponibilidad._`
+            );
+
+            window.open(`https://wa.me/${waNum}?text=${text}`, '_blank');
+            closeApptModal();
+            apptForm.reset();
+        });
+    }
+
     function showToast(msg) {
         let toast = document.querySelector('.toast');
         if (!toast) {
