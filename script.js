@@ -515,76 +515,106 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Carousel controls
+    // Carousel — Infinite auto-scroll + smooth arrows + touch drag
     const container = document.getElementById('tickerContainer');
     const track = document.getElementById('tickerTrack');
     const btnPrev = document.getElementById('tickerPrev');
     const btnNext = document.getElementById('tickerNext');
 
     if (container && track) {
-        let position = 0;
-        let speed = -0.3;
+        let pos = 0;
+        let speed = 0.5;
+        let autoScrollId = null;
         let isPaused = false;
         let isDragging = false;
         let startX = 0;
-        let currentTranslate = 0;
+        let dragStartPos = 0;
+        const CARD_GAP = 24;
 
-        function getHalfWidth() { return track.scrollWidth / 2; }
-
-        function animate() {
-            if (!isPaused && !isDragging) {
-                position += speed;
-                const halfWidth = getHalfWidth();
-                if (halfWidth > 0) {
-                    if (position <= -halfWidth) position += halfWidth;
-                    if (position > 0) position -= halfWidth;
-                }
-                track.style.transform = `translateX(${position}px)`;
-            }
-            requestAnimationFrame(animate);
+        function getGroupWidth() {
+            const firstGroup = track.querySelector('.ticker-group');
+            return firstGroup ? firstGroup.offsetWidth + CARD_GAP : 0;
         }
 
-        animate();
+        function getCardWidth() {
+            const card = track.querySelector('.review-card');
+            return card ? card.offsetWidth + CARD_GAP : 364;
+        }
 
-        container.addEventListener('mouseenter', () => isPaused = true);
-        container.addEventListener('mouseleave', () => isPaused = false);
+        function setTranslate() {
+            track.style.transform = `translateX(${pos}px)`;
+        }
+
+        function wrapPosition() {
+            const gw = getGroupWidth();
+            if (gw <= 0) return;
+            if (pos <= -gw) pos += gw;
+            if (pos > 0) pos -= gw;
+        }
+
+        function startAutoScroll() {
+            stopAutoScroll();
+            autoScrollId = setInterval(() => {
+                if (!isPaused && !isDragging) {
+                    pos -= speed;
+                    wrapPosition();
+                    setTranslate();
+                }
+            }, 16);
+        }
+
+        function stopAutoScroll() {
+            if (autoScrollId) { clearInterval(autoScrollId); autoScrollId = null; }
+        }
+
+        function smoothScrollTo(target, duration) {
+            const start = pos;
+            const diff = target - start;
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                pos = start + diff * eased;
+                wrapPosition();
+                setTranslate();
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
 
         if (btnNext) {
             btnNext.addEventListener('click', (e) => {
                 e.stopPropagation();
-                position -= 340;
-                const halfWidth = getHalfWidth();
-                if (halfWidth > 0 && position <= -halfWidth) position += halfWidth;
-                track.style.transform = `translateX(${position}px)`;
+                const cw = getCardWidth();
+                smoothScrollTo(pos - cw, 400);
             });
         }
 
         if (btnPrev) {
             btnPrev.addEventListener('click', (e) => {
                 e.stopPropagation();
-                position += 340;
-                const halfWidth = getHalfWidth();
-                if (halfWidth > 0 && position > 0) position -= halfWidth;
-                track.style.transform = `translateX(${position}px)`;
+                const cw = getCardWidth();
+                smoothScrollTo(pos + cw, 400);
             });
         }
+
+        container.addEventListener('mouseenter', () => isPaused = true);
+        container.addEventListener('mouseleave', () => isPaused = false);
 
         const startDrag = (e) => {
             isDragging = true;
             startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            currentTranslate = position;
+            dragStartPos = pos;
         };
 
         const moveDrag = (e) => {
             if (!isDragging) return;
-            const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            position = currentTranslate + (currentX - startX);
-            const halfWidth = getHalfWidth();
-            if (halfWidth > 0) {
-                if (position <= -halfWidth) position += halfWidth;
-                if (position > 0) position -= halfWidth;
-            }
-            track.style.transform = `translateX(${position}px)`;
+            const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            pos = dragStartPos + (x - startX);
+            wrapPosition();
+            setTranslate();
         };
 
         const endDrag = () => { isDragging = false; };
@@ -595,6 +625,8 @@ document.addEventListener('DOMContentLoaded', () => {
         container.addEventListener('touchstart', startDrag, { passive: true });
         container.addEventListener('touchmove', moveDrag, { passive: true });
         window.addEventListener('touchend', endDrag);
+
+        startAutoScroll();
     }
 
     function showToast(msg) {
