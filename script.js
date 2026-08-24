@@ -315,6 +315,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const scheduleEl = document.getElementById('contactSchedule');
         if (scheduleEl && p.schedule) scheduleEl.textContent = p.schedule;
 
+        setText('footerPhone', p.phone);
+        setText('footerEmail', p.email);
+        setText('footerAddress', p.address);
+        setText('footerSchedule', p.schedule);
+
+        const footerPhoneLink = document.getElementById('footerPhoneLink');
+        if (footerPhoneLink && p.phone) footerPhoneLink.href = `tel:${p.phone.replace(/\s/g, '')}`;
+
+        const footerEmailLink = document.getElementById('footerEmailLink');
+        if (footerEmailLink && p.email) footerEmailLink.href = `mailto:${p.email}`;
+
+        const footerAddressLink = document.getElementById('footerAddressLink');
+        if (footerAddressLink && p.googleMapsUrl) footerAddressLink.href = p.googleMapsUrl;
+
+        const footerLogoImg = document.getElementById('footerLogoImg');
+        if (footerLogoImg && p.siteLogo) footerLogoImg.src = p.siteLogo;
+
         const phoneCard = document.getElementById('contactPhoneCard');
         if (phoneCard && p.phone) phoneCard.href = `tel:${p.phone.replace(/\s/g, '')}`;
 
@@ -628,6 +645,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         startAutoScroll();
     }
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.closest('.faq-item');
+            const wasActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item.active').forEach(a => a.classList.remove('active'));
+            if (!wasActive) item.classList.add('active');
+        });
+    });
 
     function showToast(msg) {
         let toast = document.querySelector('.toast');

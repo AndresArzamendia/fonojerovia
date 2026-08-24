@@ -31,7 +31,7 @@
     <div class="bg-glow"></div>
 
     <nav class="navbar">
-        <a href="#" class="logo-capsule">
+        <a href="#hero" class="logo-capsule">
             <div class="logo-circle-wrapper">
                 <img src="logo-blanco.ico" alt="Logo Jerovia" class="logo-img" id="siteLogo">
             </div>
@@ -39,20 +39,13 @@
         </a>
         <ul class="nav-links" id="navLinks">
             <li><a href="#hero" class="nav-btn">Inicio</a></li>
-            <li><a href="#sobre-mi" class="nav-btn">Sobre Mi</a></li>
-            <li><a href="#formacion" class="nav-btn">Formacion</a></li>
-            <li><a href="#experiencia" class="nav-btn">Experiencia</a></li>
-            <li><a href="#certificaciones" class="nav-btn">Certificaciones</a></li>
             <li><a href="#servicios" class="nav-btn">Servicios</a></li>
-            <li><a href="#galeria" class="nav-btn">Galeria</a></li>
+            <li><a href="#sobre-mi" class="nav-btn">Sobre Mi</a></li>
             <li><a href="#opiniones" class="nav-btn">Opiniones</a></li>
             <li><a href="#contacto" class="nav-btn">Contacto</a></li>
         </ul>
+        <a href="#contacto" class="btn btn-nav-cta"><i data-lucide="calendar-check"></i> <span>Pedir Cita</span></a>
         <div class="navbar-info" id="navbarInfo">
-            <a href="#" class="navbar-chip" id="navLocation" target="_blank" rel="noopener">
-                <i data-lucide="map-pin"></i>
-                <span id="navAddress">Luque, Paraguay</span>
-            </a>
             <a href="#" class="navbar-chip phone-chip" id="navPhone">
                 <i data-lucide="phone"></i>
                 <span id="navPhoneNum">+595 976 220 370</span>
@@ -73,8 +66,8 @@
                 <a href="#" class="contact-chip clickable-chip" id="heroPhoneCard"><i data-lucide="phone"></i> <span id="heroPhone">+595 976 220 370</span></a>
             </div>
             <div class="hero-buttons">
-                <a href="#contacto" class="btn btn-primary">Contactar</a>
-                <a href="#sobre-mi" class="btn btn-secondary">Conocer Mas</a>
+                <a href="#contacto" class="btn btn-primary"><i data-lucide="calendar-check"></i> Agendar Consulta</a>
+                <a href="#servicios" class="btn btn-secondary">Ver Servicios</a>
             </div>
         </div>
         <div class="hero-right">
@@ -86,6 +79,11 @@
             </div>
             <div class="badge-card" id="heroQuote">Solo basta confiar, lo escencial es invisible...</div>
         </div>
+    </section>
+
+    <section class="section section-anim" id="servicios">
+        <h2 class="section-title"><i data-lucide="stethoscope"></i> Servicios</h2>
+        <div class="services-grid" id="servicesGrid"></div>
     </section>
 
     <section class="section section-anim" id="sobre-mi">
@@ -127,9 +125,40 @@
         <div class="cert-grid" id="certGrid"></div>
     </section>
 
-    <section class="section section-anim" id="servicios">
-        <h2 class="section-title"><i data-lucide="stethoscope"></i> Servicios</h2>
-        <div class="services-grid" id="servicesGrid"></div>
+    <section class="section section-anim" id="beneficios">
+        <h2 class="section-title"><i data-lucide="sparkles"></i> Por que Elegirnos</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon"><i data-lucide="heart-handshake"></i></div>
+                <h4>Atencion Personalizada</h4>
+                <p>Cada paciente recibe un plan terapeutico unico, disenado segun sus necesidades y objetivos.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i data-lucide="video"></i></div>
+                <h4>Online y Presencial</h4>
+                <p>Flexibilidad para elegir entre sesiones en consultorio o acompanamiento virtual desde tu hogar.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i data-lucide="baby"></i></div>
+                <h4>Especialistas en Ninos</h4>
+                <p>Enfoque lúdico y profesional en el desarrollo del lenguaje, habla y comunicacion infantil.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i data-lucide="shield-check"></i></div>
+                <h4>Profesional Matriculada</h4>
+                <p>Matricula profesional habilitante que garantiza practica legal y etica en cada sesion.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i data-lucide="clock"></i></div>
+                <h4>Horarios Flexibles</h4>
+                <p>Adaptamos los horarios de las sesiones para facilitar la asistencia de pacientes y familias.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i data-lucide="trending-up"></i></div>
+                <h4>Resultados Comprobados</h4>
+                <p>Seguimiento continuo y evaluaciones periodicas para medir el progreso de cada paciente.</p>
+            </div>
+        </div>
     </section>
 
     <section class="section section-anim" id="galeria">
@@ -180,6 +209,66 @@
         </div>
     </section>
 
+    <section class="section section-anim" id="faq">
+        <h2 class="section-title"><i data-lucide="help-circle"></i> Preguntas Frecuentes</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Como es la primera consulta?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>En la primera consulta realizamos una evaluacion inicial para conocer las necesidades del paciente, explicamos el proceso terapeutico y elaboramos un plan de tratamiento personalizado.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Cuantas sesiones necesito?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>La cantidad de sesiones depende de cada caso. Luego de la evaluacion inicial, establecemos un plan con una cantidad estimada de sesiones y objetivos claros a alcanzar.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Atienden obras sociales o seguros medicos?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Consultanos para verificar si trabajamos con tu obra social o seguro medico. Brindamos facturas y documentacion necesaria para el reembolso.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Realizan atencion online?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Si, ofrecemos sesiones de telefonia/fonoaudiologia de forma virtual para pacientes que no pueden asistir presencialmente al consultorio.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>A que edades atienden?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Atendemos pacientes de todas las edades, desde recien nacidos hasta adultos. Cada rango de edad tiene sus propias particularidades que abordamos con enfoques adecuados.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Como puedo agendar una cita?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Podes agendar tu cita a traves de WhatsApp, por telefono o completando el formulario de contacto en esta pagina. Te responderemos a la brevedad para coordinar tu turno.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section section-anim" id="contacto">
         <h2 class="section-title"><i data-lucide="mail"></i> Contacto</h2>
         <div class="contact-grid">
@@ -226,11 +315,36 @@
     </section>
 
     <footer>
-        <p id="footerText">&copy; 2026 Jerovia - Consultorio Fonoaudiologico. Todos los derechos reservados.</p>
-        <div class="footer-links">
-            <a href="https://wa.me/595976220370" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
-            <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
-            <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="#hero" class="footer-logo">
+                    <div class="logo-circle-wrapper">
+                        <img src="logo-blanco.ico" alt="Logo Jerovia" id="footerLogoImg">
+                    </div>
+                    <span class="logo-text">JEROVIA</span>
+                </a>
+                <p id="footerText">Consultorio Fonoaudiologico especializado en el desarrollo del lenguaje, la audicion y la comunicacion.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <div class="footer-contact-list">
+                    <a href="#" id="footerPhoneLink"><i data-lucide="phone"></i> <span id="footerPhone">+595 976 220 370</span></a>
+                    <a href="#" id="footerEmailLink"><i data-lucide="mail"></i> <span id="footerEmail">paola@jerovia.com</span></a>
+                    <a href="#" id="footerAddressLink" target="_blank" rel="noopener"><i data-lucide="map-pin"></i> <span id="footerAddress">Luque, Paraguay</span></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Horarios</h4>
+                <p id="footerSchedule">Lunes a Viernes: 8:00 - 17:00</p>
+                <div class="footer-links">
+                    <a href="https://wa.me/595976220370" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+                    <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Jerovia. Todos los derechos reservados.</p>
         </div>
     </footer>
 
