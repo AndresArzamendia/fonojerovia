@@ -2698,6 +2698,145 @@ footer::before {
     box-shadow: 0 6px 20px rgba(75, 156, 211, 0.4);
 }
 .btn-nav-cta:active { transform: scale(0.96); }
+.btn-nav-cta-desktop { flex-shrink: 0; }
+.nav-cta-item { display: none !important; }
+
+/* =========================================
+   CONTACT FORM ENHANCED
+   ========================================= */
+.contact-form-subtitle {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: -0.3rem 0 1rem;
+}
+.contact-form-card select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    background: #fafcff;
+    color: var(--text-color);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234B9CD3' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+.contact-form-card select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.contact-form-card .form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+.contact-form-card input,
+.contact-form-card textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    background: #fafcff;
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+.contact-form-card input:focus,
+.contact-form-card textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.contact-form-card textarea {
+    resize: vertical;
+}
+.btn-contact-submit {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem;
+    font-size: 0.95rem;
+    border-radius: 14px;
+}
+
+/* =========================================
+   CONFIRMATION OVERLAY
+   ========================================= */
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.confirm-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+.confirm-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+}
+.confirm-overlay.open .confirm-box {
+    transform: translateY(0) scale(1);
+}
+.confirm-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.12), rgba(40, 167, 69, 0.04));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: #28a745;
+    animation: confirmPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+@keyframes confirmPop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+.confirm-icon i, .confirm-icon svg { width: 36px; height: 36px; }
+.confirm-box h3 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--accent-dark);
+    margin: 0 0 0.5rem;
+}
+.confirm-box p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.2rem;
+}
+.confirm-box .btn {
+    display: inline-flex;
+    padding: 0.7rem 2rem;
+}
 
 /* =========================================
    BENEFITS GRID
@@ -3137,10 +3276,11 @@ footer::before {
 /* =========================================
    RESPONSIVE — Benefits, FAQ, Footer, Nav CTA
    ========================================= */
+@media (max-width: 1024px) {
+    .btn-nav-cta-desktop { display: none !important; }
+    .nav-cta-item { display: list-item !important; }
+}
 @media (max-width: 768px) {
-    .btn-nav-cta span { display: none; }
-    .btn-nav-cta { padding: 0.5rem; border-radius: 12px; width: 38px; height: 38px; justify-content: center; }
-
     .benefits-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
     .benefit-card { padding: 1.5rem; }
 
@@ -3156,6 +3296,10 @@ footer::before {
     .modal-content { padding: 1.5rem 1.2rem 1.2rem; border-radius: 20px; }
     .form-row-2col, .form-row-3col { grid-template-columns: 1fr; }
     .modal-header h2 { font-size: 1.2rem; }
+
+    .contact-form-subtitle { font-size: 0.82rem; }
+    .contact-form-card .form-row-2col { grid-template-columns: 1fr; }
+    .confirm-box { padding: 2rem 1.5rem; }
 }
 @media (max-width: 480px) {
     .benefits-grid { grid-template-columns: 1fr; }
@@ -3246,6 +3390,18 @@ footer::before {
 
     .nav-links a:hover {
         transform: scale(1.02);
+    }
+
+    .nav-cta-item a {
+        background: linear-gradient(135deg, var(--accent-color), var(--accent-dark)) !important;
+        color: #fff !important;
+        box-shadow: 0 4px 14px rgba(75, 156, 211, 0.3);
+        font-weight: 700;
+    }
+    .nav-cta-item a::before { display: none !important; }
+    .nav-cta-item a:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(75, 156, 211, 0.4);
     }
 
     .navbar-info {

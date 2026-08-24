@@ -522,14 +522,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Contact form
+    // Contact form → WhatsApp + confirmation
     const contactForm = document.getElementById('contactForm');
+    const confirmOverlay = document.getElementById('confirmOverlay');
+    const confirmCloseBtn = document.getElementById('confirmClose');
+
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast('Mensaje enviado. Gracias!');
+            const name = document.getElementById('contactName').value.trim();
+            const phone = document.getElementById('contactPhoneInput').value.trim();
+            const service = document.getElementById('contactService').value;
+            const msg = document.getElementById('contactMsg').value.trim();
+            if (!name || !phone || !service || !msg) return;
+
+            const waNum = '595976220370';
+            const text = encodeURIComponent(
+                `Hola, me comunico desde la pagina web de Jerovia.\n\n` +
+                `*Nombre:* ${name}\n` +
+                `*Telefono:* ${phone}\n` +
+                `*Servicio requerido:* ${service}\n\n` +
+                `*Consulta:*\n${msg}`
+            );
+
+            window.open(`https://wa.me/${waNum}?text=${text}`, '_blank');
             contactForm.reset();
+
+            if (confirmOverlay) {
+                confirmOverlay.classList.add('open');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
         });
+    }
+
+    if (confirmCloseBtn && confirmOverlay) {
+        confirmCloseBtn.addEventListener('click', () => confirmOverlay.classList.remove('open'));
+        confirmOverlay.addEventListener('click', (e) => { if (e.target === confirmOverlay) confirmOverlay.classList.remove('open'); });
     }
 
     // Carousel — Infinite auto-scroll + smooth arrows + touch drag
@@ -671,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
     }
 
-    document.querySelectorAll('[href="#contacto"].btn-nav-cta, .btn-nav-cta, .btn-primary[href="#contacto"]').forEach(el => {
+    document.querySelectorAll('.btn-nav-cta, .btn-primary[href="#contacto"]').forEach(el => {
         if (el.textContent.includes('Pedir') || el.textContent.includes('Agendar')) {
             el.addEventListener('click', (e) => { e.preventDefault(); openApptModal(); });
         }
