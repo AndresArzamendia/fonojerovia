@@ -331,7 +331,8 @@ body {
    SECTIONS & HERO
    ========================================= */
 .section {
-    padding: 5rem 10%;
+    padding: 4rem 10%;
+    position: relative;
 }
 
 .section-title {
@@ -402,17 +403,43 @@ body {
 }
 
 .hero {
-    min-height: 100vh;
-    min-height: 100dvh;
-    min-height: var(--app-height, 100dvh);
+    min-height: 92vh;
+    min-height: 92dvh;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.1fr 1fr;
     align-items: center;
-    padding: 2rem 10% 0 10%;
-    gap: 3rem;
+    padding: 5rem 8% 3rem 8%;
+    gap: 2.5rem;
+    position: relative;
+    overflow: hidden;
 }
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(75, 156, 211, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -15%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(221, 160, 221, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+.hero > * { position: relative; z-index: 1; }
 
-.hero-left { max-width: 550px; }
+.hero-left { max-width: 560px; }
 
 .hero-right {
     position: relative;
@@ -428,9 +455,9 @@ body {
     background: #ffffff;
     border-radius: 24px;
     padding: 8px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
     overflow: hidden;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
 
 .photo-card img {
@@ -441,70 +468,84 @@ body {
 
 .main-card {
     width: 290px;
-    height: 380px;
+    height: 370px;
     top: 10px;
     left: 40px;
     z-index: 2;
 }
 
 .sub-card {
-    width: 200px;
-    height: 240px;
-    bottom: 20px;
-    right: 20px;
+    width: 190px;
+    height: 230px;
+    bottom: 25px;
+    right: 25px;
     z-index: 3;
 }
 
 .badge-card {
     position: absolute;
-    bottom: 0;
-    left: 80px;
+    bottom: 5px;
+    left: 70px;
     z-index: 4;
     background: #ffffff;
     border: 2px solid var(--accent-color);
     color: var(--accent-dark);
-    padding: 0.8rem 1.4rem;
+    padding: 0.7rem 1.3rem;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 0.9rem;
-    box-shadow: 0 10px 25px rgba(75, 156, 211, 0.2);
+    font-size: 0.85rem;
+    box-shadow: 0 10px 30px rgba(75, 156, 211, 0.2);
+    animation: badgeFloat 4s ease-in-out infinite;
+}
+@keyframes badgeFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
 .photo-card:hover {
     transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(255,255,255,0.5) inset;
 }
 
 .badge {
     font-family: var(--font-code);
     background: var(--accent-glow);
     color: var(--accent-color);
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    border: 1px solid var(--accent-color);
+    padding: 0.45rem 1.1rem;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    border: 1.5px solid rgba(75, 156, 211, 0.2);
     display: inline-block;
+    letter-spacing: 0.5px;
+    animation: badgePulse 3s ease-in-out infinite;
+}
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(75, 156, 211, 0.15); }
+    50% { box-shadow: 0 0 0 8px rgba(75, 156, 211, 0); }
 }
 
 h1 {
-    font-size: 3.2rem;
+    font-size: 3.4rem;
     color: var(--text-main);
-    margin: 1rem 0;
-    line-height: 1.15;
+    margin: 0.8rem 0;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
 }
 
 .highlight { color: var(--accent-color); }
 
 .subtitle {
-    font-size: 1.15rem;
-    max-width: 500px;
-    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    max-width: 480px;
+    margin-bottom: 1.2rem;
     color: var(--text-muted);
+    line-height: 1.65;
 }
 
 .hero-contact-row {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
     flex-wrap: wrap;
 }
 
@@ -2152,6 +2193,30 @@ footer p {
     animation: scaleIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s backwards;
 }
 
+/* --- Benefits grid: stagger from bottom --- */
+.section-anim.visible .benefits-grid > * {
+    animation: benefitCardIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.section-anim.visible .benefits-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.section-anim.visible .benefits-grid > *:nth-child(2) { animation-delay: 0.15s; }
+.section-anim.visible .benefits-grid > *:nth-child(3) { animation-delay: 0.25s; }
+.section-anim.visible .benefits-grid > *:nth-child(4) { animation-delay: 0.35s; }
+.section-anim.visible .benefits-grid > *:nth-child(5) { animation-delay: 0.45s; }
+.section-anim.visible .benefits-grid > *:nth-child(6) { animation-delay: 0.55s; }
+.section-anim.visible .benefits-grid > *:nth-child(n+7) { animation-delay: 0.65s; }
+
+/* --- FAQ items: accordion reveal --- */
+.section-anim.visible .faq-list > * {
+    animation: faqItemIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.section-anim.visible .faq-list > *:nth-child(1) { animation-delay: 0.05s; }
+.section-anim.visible .faq-list > *:nth-child(2) { animation-delay: 0.12s; }
+.section-anim.visible .faq-list > *:nth-child(3) { animation-delay: 0.19s; }
+.section-anim.visible .faq-list > *:nth-child(4) { animation-delay: 0.26s; }
+.section-anim.visible .faq-list > *:nth-child(5) { animation-delay: 0.33s; }
+.section-anim.visible .faq-list > *:nth-child(6) { animation-delay: 0.40s; }
+.section-anim.visible .faq-list > *:nth-child(n+7) { animation-delay: 0.47s; }
+
 /* =========================================
    KEYFRAMES
    ========================================= */
@@ -2189,6 +2254,16 @@ footer p {
 @keyframes shimmer {
     0% { left: -75%; }
     100% { left: 130%; }
+}
+
+@keyframes benefitCardIn {
+    from { opacity: 0; transform: translateY(35px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes faqItemIn {
+    from { opacity: 0; transform: translateX(-25px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes pulseGlow {
@@ -2705,6 +2780,266 @@ footer::before {
 .nav-cta-item { display: none !important; }
 
 /* =========================================
+   HERO — Visual Enhancements
+   ========================================= */
+.hero-left .badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.hero-left .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    animation: dotBlink 2s ease-in-out infinite;
+}
+@keyframes dotBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.btn {
+    position: relative;
+}
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(75, 156, 211, 0.3);
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(75, 156, 211, 0.4);
+}
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--accent-dark);
+    border: 1.5px solid var(--border-color);
+    backdrop-filter: blur(8px);
+}
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   CONTACT CHIP — Interactive
+   ========================================= */
+.contact-chip {
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.contact-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(75, 156, 211, 0.12);
+    border-color: rgba(75, 156, 211, 0.35);
+}
+
+/* =========================================
+   ABOUT / STATS — Glow Border
+   ========================================= */
+.stats-card {
+    position: relative;
+    background: linear-gradient(145deg, #ffffff 0%, #f7fbff 100%);
+    border: 1.5px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    overflow: hidden;
+}
+.stats-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--accent-color), var(--pastel-purple), var(--pastel-green), var(--accent-color));
+    background-size: 300% 300%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: gradientRotate 4s linear infinite;
+}
+.stats-card:hover::before {
+    opacity: 1;
+}
+@keyframes gradientRotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 14px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+.stat-item:hover {
+    background: rgba(75, 156, 211, 0.04);
+    transform: scale(1.05);
+}
+
+.stat-number {
+    font-family: var(--font-code);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    line-height: 1;
+}
+.stat-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    font-weight: 500;
+}
+
+/* =========================================
+   BIO CARD — Decorative
+   ========================================= */
+.bio-card {
+    position: relative;
+    overflow: hidden;
+}
+.bio-card::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(75, 156, 211, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* =========================================
+   SERVICES GRID — Tighter
+   ========================================= */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+}
+
+.service-card {
+    background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+}
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+.service-card:hover::before { opacity: 1; }
+.service-card:nth-child(1)::before { background: linear-gradient(90deg, var(--pastel-pink), #ff8fab); }
+.service-card:nth-child(2)::before { background: linear-gradient(90deg, var(--pastel-green), #6bcb77); }
+.service-card:nth-child(3)::before { background: linear-gradient(90deg, var(--pastel-yellow), #f9c74f); }
+.service-card:nth-child(4)::before { background: linear-gradient(90deg, var(--pastel-purple), #c77dff); }
+.service-card:nth-child(5)::before { background: linear-gradient(90deg, var(--pastel-orange), #fb8500); }
+.service-card:nth-child(6)::before { background: linear-gradient(90deg, var(--pastel-blue), #48cae4); }
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.service-card h3 {
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+}
+.service-card p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+/* =========================================
+   BENEFITS — Tighter Grid + Shine
+   ========================================= */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+}
+.benefit-card {
+    background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 1.6rem;
+    text-align: center;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+    position: relative;
+    overflow: hidden;
+}
+.benefit-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+    transform: rotate(45deg) translateY(100%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+}
+.benefit-card:hover::before {
+    transform: rotate(45deg) translateY(-100%);
+}
+.benefit-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(75, 156, 211, 0.12);
+}
+
+.benefit-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.8rem;
+    background: linear-gradient(135deg, rgba(75, 156, 211, 0.1), rgba(221, 160, 221, 0.1));
+    color: var(--accent-color);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.benefit-icon i, .benefit-icon svg { width: 26px; height: 26px; }
+.benefit-card:hover .benefit-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 18px rgba(75, 156, 211, 0.2);
+}
+.benefit-card h4 {
+    color: var(--accent-dark);
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+}
+.benefit-card p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* =========================================
    CONTACT FORM ENHANCED
    ========================================= */
 .contact-form-subtitle {
@@ -2839,71 +3174,6 @@ footer::before {
 .confirm-box .btn {
     display: inline-flex;
     padding: 0.7rem 2rem;
-}
-
-/* =========================================
-   BENEFITS GRID
-   ========================================= */
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-.benefit-card {
-    background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    position: relative;
-    overflow: hidden;
-}
-.benefit-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-color), var(--pastel-purple));
-    transform: scaleX(0);
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.benefit-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(75, 156, 211, 0.12);
-}
-.benefit-card:hover::after {
-    transform: scaleX(1);
-}
-.benefit-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    background: linear-gradient(135deg, rgba(75, 156, 211, 0.1), rgba(221, 160, 221, 0.1));
-    color: var(--accent-color);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
-.benefit-icon i, .benefit-icon svg { width: 28px; height: 28px; }
-.benefit-card:hover .benefit-icon {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 6px 18px rgba(75, 156, 211, 0.2);
-}
-.benefit-card h4 {
-    color: var(--accent-dark);
-    margin-bottom: 0.5rem;
-    font-size: 1.05rem;
-}
-.benefit-card p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
 }
 
 /* =========================================
@@ -3423,31 +3693,33 @@ footer::before {
 @media (max-width: 900px) {
     .hero {
         grid-template-columns: 1fr;
-        padding-top: 7rem;
+        padding-top: 6rem;
         text-align: center;
         min-height: auto;
-        padding-bottom: 3rem;
+        padding-bottom: 2rem;
+        gap: 1.5rem;
     }
+    .hero::before, .hero::after { display: none; }
 
     .hero-left { max-width: 100%; }
     .hero-buttons { justify-content: center; }
     .hero-contact-row { justify-content: center; }
 
     .hero-right {
-        height: 350px;
-        margin-top: 2rem;
+        height: 320px;
+        margin-top: 1rem;
     }
 
     .main-card {
-        width: 220px;
-        height: 290px;
+        width: 200px;
+        height: 260px;
         left: 50%;
         transform: translateX(-70%);
     }
 
     .sub-card {
-        width: 160px;
-        height: 190px;
+        width: 150px;
+        height: 180px;
         right: 50%;
         transform: translateX(70%);
     }
@@ -3456,6 +3728,8 @@ footer::before {
         left: 50%;
         transform: translateX(-50%);
         bottom: -10px;
+        font-size: 0.8rem;
+        padding: 0.6rem 1.1rem;
     }
 
     .about-grid {
@@ -3467,7 +3741,7 @@ footer::before {
     }
 
     .section {
-        padding: 4rem 6%;
+        padding: 3.5rem 6%;
     }
 }
 
@@ -3497,11 +3771,11 @@ footer::before {
 
     .hero {
         grid-template-columns: 1fr;
-        padding-top: 6.5rem;
+        padding-top: 5.5rem;
         text-align: center;
         min-height: auto;
-        padding-bottom: 3rem;
-        gap: 2rem;
+        padding-bottom: 2rem;
+        gap: 1.5rem;
     }
 
     .hero-left .badge { animation-delay: 0.2s; }
