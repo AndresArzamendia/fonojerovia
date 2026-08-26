@@ -660,17 +660,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         detailOverlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
+        syncModalState();
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function closeDetailModal() {
         if (detailOverlay) detailOverlay.classList.remove('open');
-        document.body.style.overflow = '';
+        syncModalState();
+    }
+
+    function syncModalState() {
+        const anyOpen = (detailOverlay && detailOverlay.classList.contains('open')) ||
+                        (bioOverlay && bioOverlay.classList.contains('open'));
+        document.body.classList.toggle('modal-open', anyOpen);
+        document.body.style.overflow = anyOpen ? 'hidden' : '';
     }
 
     document.addEventListener('click', (e) => {
-        const el = e.target.closest('[data-type]');
+        if (e.target.closest('.detail-overlay') || e.target.closest('.bio-overlay')) return;
+        const el = e.target.closest('[data-type]:not([data-type="bio"])');
         if (el) {
             e.preventDefault();
             openDetailModal(el.dataset.type, parseInt(el.dataset.index, 10));
@@ -771,14 +779,14 @@ document.addEventListener('DOMContentLoaded', () => {
         renderBioCarousel();
         if (bioModalText) bioModalText.textContent = (siteData && siteData.personal && siteData.personal.bio) || '';
         bioOverlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
+        syncModalState();
         startBioAutoPlay();
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function closeBioModal() {
         if (bioOverlay) bioOverlay.classList.remove('open');
-        document.body.style.overflow = '';
+        syncModalState();
         stopBioAutoPlay();
     }
 
@@ -810,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hook bio card click
     document.addEventListener('click', (e) => {
         const bioCard = e.target.closest('[data-type="bio"]');
-        if (bioCard) { e.preventDefault(); openBioModal(); }
+        if (bioCard) { e.preventDefault(); e.stopPropagation(); openBioModal(); }
     });
 
     // Comment form

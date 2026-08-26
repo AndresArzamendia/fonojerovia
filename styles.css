@@ -39,6 +39,20 @@ html, body {
     padding: 0;
 }
 
+body.modal-open {
+    overflow: hidden !important;
+}
+
+body.modal-open > *:not(.detail-overlay):not(.bio-overlay) {
+    pointer-events: none !important;
+}
+
+body.modal-open .navbar,
+body.modal-open .floating-shapes,
+body.modal-open .parallax-orb {
+    pointer-events: none !important;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
