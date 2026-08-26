@@ -608,9 +608,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailClose = document.getElementById('detailClose');
 
     const detailColorMap = {
-        education: { bg: 'rgba(221,160,221,0.12)', color: '#9b59b6', icon: 'graduation-cap', tag: 'Formacion Academica' },
-        experience: { bg: 'rgba(75,156,211,0.1)', color: '#1E4363', icon: 'briefcase', tag: 'Experiencia Profesional' },
-        certification: { bg: 'rgba(255,182,193,0.12)', color: '#d4607a', icon: 'award', tag: 'Certificacion' }
+        education: { bg: 'rgba(221,160,221,0.12)', color: '#9b59b6', icon: 'graduation-cap', tag: 'Formacion Academica', tagIcon: 'book-open' },
+        experience: { bg: 'rgba(75,156,211,0.1)', color: '#1E4363', icon: 'briefcase', tag: 'Experiencia Profesional', tagIcon: 'briefcase' },
+        certification: { bg: 'rgba(255,182,193,0.12)', color: '#d4607a', icon: 'award', tag: 'Certificacion', tagIcon: 'award' }
     };
 
     function openDetailModal(type, index) {
@@ -622,35 +622,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = items[index];
         const config = detailColorMap[type] || detailColorMap.education;
 
+        detailModal.setAttribute('data-type', type);
+
         const icon = document.getElementById('detailIcon');
         const title = document.getElementById('detailTitle');
         const subtitle = document.getElementById('detailSubtitle');
-        const period = document.getElementById('detailPeriod');
+        const periodText = document.getElementById('detailPeriodText');
         const body = document.getElementById('detailBody');
-        const tag = document.getElementById('detailTag');
-        const accentBar = detailModal.querySelector('.detail-accent-bar');
+        const heroLabel = document.getElementById('detailHeroLabel');
+        const footer = document.getElementById('detailFooter');
 
-        if (accentBar) accentBar.style.background = `linear-gradient(90deg, ${config.color}, var(--pastel-purple), ${config.color})`;
         if (icon) {
             icon.style.background = config.bg;
             icon.style.color = config.color;
             icon.innerHTML = `<i data-lucide="${config.icon}"></i>`;
         }
+        if (heroLabel) heroLabel.textContent = config.tag;
         if (type === 'education') {
             if (title) title.textContent = item.degree || '';
             if (subtitle) subtitle.textContent = item.institution || '';
-            if (period) period.textContent = item.year || '';
+            if (periodText) periodText.textContent = item.year || '';
         } else if (type === 'experience') {
             if (title) title.textContent = item.role || '';
             if (subtitle) subtitle.textContent = item.company || '';
-            if (period) period.textContent = item.period || '';
+            if (periodText) periodText.textContent = item.period || '';
         } else {
             if (title) title.textContent = item.name || '';
             if (subtitle) subtitle.textContent = item.institution || '';
-            if (period) period.textContent = item.year || '';
+            if (periodText) periodText.textContent = item.year || '';
         }
         if (body) body.textContent = item.description || '';
-        if (tag) tag.textContent = config.tag;
+        if (footer) {
+            footer.innerHTML = `
+                <span class="detail-tag"><i data-lucide="${config.tagIcon}"></i> ${config.tag}</span>
+                ${item.year || item.period ? `<span class="detail-tag"><i data-lucide="calendar"></i> ${item.year || item.period}</span>` : ''}
+            `;
+        }
 
         detailOverlay.classList.add('open');
         document.body.style.overflow = 'hidden';

@@ -403,17 +403,29 @@
 
     <div class="detail-overlay" id="detailOverlay">
         <div class="detail-modal" id="detailModal">
-            <div class="detail-accent-bar"></div>
+            <div class="detail-shapes" aria-hidden="true">
+                <span class="dshape dshape-sq"></span>
+                <span class="dshape dshape-circ"></span>
+                <span class="dshape dshape-sq"></span>
+                <span class="dshape dshape-dot"></span>
+                <span class="dshape dshape-circ"></span>
+                <span class="dshape dshape-dot"></span>
+            </div>
+            <div class="detail-hero">
+                <div class="detail-hero-glow"></div>
+                <div class="detail-icon" id="detailIcon"></div>
+            </div>
             <button class="detail-close" id="detailClose" aria-label="Cerrar">
                 <i data-lucide="x"></i>
             </button>
-            <div class="detail-icon" id="detailIcon"></div>
-            <h3 class="detail-title" id="detailTitle"></h3>
-            <div class="detail-subtitle" id="detailSubtitle"></div>
-            <div class="detail-period" id="detailPeriod"></div>
-            <div class="detail-body" id="detailBody"></div>
-            <div class="detail-footer">
-                <span class="detail-tag" id="detailTag"></span>
+            <div class="detail-content">
+                <div class="detail-hero-label" id="detailHeroLabel"></div>
+                <h3 class="detail-title" id="detailTitle"></h3>
+                <div class="detail-subtitle" id="detailSubtitle"></div>
+                <div class="detail-period" id="detailPeriod"><span id="detailPeriodText"></span></div>
+                <div class="detail-divider"></div>
+                <p class="detail-body" id="detailBody"></p>
+                <div class="detail-footer" id="detailFooter"></div>
             </div>
         </div>
     </div>
