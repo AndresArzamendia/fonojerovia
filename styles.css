@@ -28,12 +28,24 @@
     scroll-behavior: smooth;
 }
 
+html {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
     font-family: var(--font-sans);
     line-height: 1.6;
     overflow-x: hidden;
+    overflow-x: clip;
     position: relative;
     background-image:
         radial-gradient(circle at 1px 1px, rgba(75, 156, 211, 0.04) 1px, transparent 0),
@@ -3103,6 +3115,229 @@ footer::before {
 .nav-cta-item { display: none !important; }
 
 /* =========================================
+   DETAIL MODAL — Timeline/Card Expand
+   ========================================= */
+.detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 35, 55, 0.55);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.detail-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.detail-modal {
+    position: relative;
+    background: #ffffff;
+    border-radius: 24px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 2.5rem 2rem 2rem;
+    box-shadow:
+        0 24px 80px rgba(14, 35, 55, 0.25),
+        0 8px 32px rgba(75, 156, 211, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transform: scale(0.88) translateY(30px);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+
+.detail-overlay.open .detail-modal {
+    transform: scale(1) translateY(0);
+}
+
+.detail-accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    border-radius: 24px 24px 0 0;
+    background: linear-gradient(90deg, var(--accent-color), var(--pastel-purple), var(--pastel-green));
+    background-size: 200% 100%;
+    animation: detailBarShimmer 3s ease infinite;
+}
+
+@keyframes detailBarShimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+.detail-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(75, 156, 211, 0.08);
+    color: var(--accent-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 2;
+}
+
+.detail-close:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    transform: rotate(90deg) scale(1.1);
+}
+
+.detail-close i, .detail-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.detail-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    animation: detailIconPop 0.5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes detailIconPop {
+    from { transform: scale(0) rotate(-20deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.detail-icon i, .detail-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.detail-title {
+    font-size: 1.35rem;
+    color: var(--accent-dark);
+    margin: 0 0 0.4rem;
+    line-height: 1.3;
+    animation: detailTextIn 0.5s 0.15s both;
+}
+
+.detail-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    animation: detailTextIn 0.5s 0.25s both;
+}
+
+.detail-period {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background: rgba(75, 156, 211, 0.07);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    margin: 0.8rem 0 1.2rem;
+    animation: detailTextIn 0.5s 0.3s both;
+}
+
+.detail-body {
+    font-size: 0.92rem;
+    color: var(--text-main);
+    line-height: 1.75;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 1.2rem;
+    animation: detailTextIn 0.5s 0.35s both;
+}
+
+.detail-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    animation: detailTextIn 0.5s 0.4s both;
+}
+
+.detail-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+    background: linear-gradient(135deg, rgba(75, 156, 211, 0.1), rgba(221, 160, 221, 0.08));
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+    letter-spacing: 0.3px;
+}
+
+@keyframes detailTextIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Timeline content clickable hint */
+.timeline-content {
+    cursor: pointer;
+}
+
+.timeline-content::after {
+    content: 'Ver detalle';
+    position: absolute;
+    bottom: 0.6rem;
+    right: 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.timeline-content:hover::after {
+    opacity: 0.7;
+    transform: translateY(0);
+}
+
+/* Detail modal responsive */
+@media (max-width: 480px) {
+    .detail-overlay {
+        padding: 0.8rem;
+        align-items: flex-end;
+    }
+    .detail-modal {
+        padding: 2rem 1.3rem 1.5rem;
+        border-radius: 20px 20px 0 0;
+        max-height: 90vh;
+        transform: scale(1) translateY(100%);
+    }
+    .detail-overlay.open .detail-modal {
+        transform: scale(1) translateY(0);
+    }
+    .detail-title { font-size: 1.2rem; }
+    .timeline-content::after { display: none; }
+}
+
+/* =========================================
    HERO — Visual Enhancements
    ========================================= */
 .hero-left .badge {
@@ -3944,6 +4179,13 @@ footer::before {
 
     .orb { animation: orbFadeIn 0s forwards; opacity: 0.6; transform: none !important; }
     .wave-divider { display: none; }
+
+    .detail-overlay { transition: none; }
+    .detail-modal { transition: none; transform: none; }
+    .detail-overlay.open .detail-modal { transform: none; }
+    .detail-accent-bar { animation: none; }
+    .detail-icon { animation: none; opacity: 1; transform: none; }
+    .detail-title, .detail-subtitle, .detail-period, .detail-body, .detail-footer { animation: none; opacity: 1; transform: none; }
 }
 
 /* =========================================
@@ -4117,6 +4359,10 @@ footer::before {
         gap: 0.4rem;
     }
 
+    .navbar::after {
+        display: none;
+    }
+
     .logo-text {
         font-size: 0.95rem;
         letter-spacing: 1.2px;
@@ -4228,6 +4474,18 @@ footer::before {
         gap: 0.8rem;
     }
 
+    .wave-divider {
+        display: none;
+    }
+
+    .parallax-orbs {
+        display: none;
+    }
+
+    .shapes-container {
+        opacity: 0.4;
+    }
+
     .section-title {
         font-size: 1.4rem;
     }
@@ -4277,6 +4535,22 @@ footer::before {
     .timeline {
         padding-left: 1.5rem;
         margin-left: 0.5rem;
+    }
+
+    .timeline-dot {
+        left: -1.65rem;
+        width: 12px;
+        height: 12px;
+        top: 6px;
+    }
+
+    .timeline::before {
+        left: -1px;
+    }
+
+    .timeline-content {
+        padding: 1.2rem;
+        border-radius: 10px;
     }
 
     .stats-card {
@@ -4386,6 +4660,27 @@ footer::before {
         padding: 1.2rem;
     }
 
+    .timeline {
+        padding-left: 1.2rem;
+        margin-left: 0.3rem;
+    }
+
+    .timeline-dot {
+        left: -1.35rem;
+        width: 10px;
+        height: 10px;
+    }
+
+    .timeline::before {
+        width: 2px;
+        left: 0;
+    }
+
+    .timeline-content {
+        padding: 1rem;
+        font-size: 0.92rem;
+    }
+
     .gallery-grid {
         grid-template-columns: 1fr;
     }
@@ -4434,4 +4729,25 @@ footer::before {
     .bio-card, .cert-card, .service-card { padding: 1rem; }
     .info-card { padding: 0.8rem 1rem; }
     .contact-form-card { padding: 1rem; }
+
+    .timeline {
+        padding-left: 1rem;
+        margin-left: 0.2rem;
+    }
+
+    .timeline-dot {
+        left: -1.1rem;
+        width: 8px;
+        height: 8px;
+    }
+
+    .timeline-content {
+        padding: 0.8rem;
+    }
+
+    .mobile-menu-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0.4rem;
+    }
 }

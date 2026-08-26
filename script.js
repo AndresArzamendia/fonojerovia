@@ -420,10 +420,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderEducation() {
         const container = document.getElementById('educationTimeline');
         if (!container || !siteData.education) return;
-        container.innerHTML = siteData.education.map(item => `
+        container.innerHTML = siteData.education.map((item, i) => `
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
-                <div class="timeline-content">
+                <div class="timeline-content" data-type="education" data-index="${i}">
                     <span class="timeline-date">${item.year}</span>
                     <h3>${item.degree}</h3>
                     <h4>${item.institution}</h4>
@@ -436,10 +436,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderExperience() {
         const container = document.getElementById('experienceTimeline');
         if (!container || !siteData.experience) return;
-        container.innerHTML = siteData.experience.map(item => `
+        container.innerHTML = siteData.experience.map((item, i) => `
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
-                <div class="timeline-content">
+                <div class="timeline-content" data-type="experience" data-index="${i}">
                     <span class="timeline-date">${item.period}</span>
                     <h3>${item.role}</h3>
                     <h4>${item.company}</h4>
@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const colors = ['pink', 'green', 'yellow', 'purple', 'blue'];
         const icons = ['award', 'book-open', 'badge-check', 'star', 'trophy'];
         container.innerHTML = siteData.certifications.map((item, i) => `
-            <div class="cert-card">
+            <div class="cert-card" data-type="certification" data-index="${i}" style="cursor:pointer;">
                 <div class="cert-icon ${colors[i % colors.length]}">
                     <i data-lucide="${icons[i % icons.length]}"></i>
                 </div>
@@ -601,6 +601,82 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadData();
+
+    // Detail modal
+    const detailOverlay = document.getElementById('detailOverlay');
+    const detailModal = document.getElementById('detailModal');
+    const detailClose = document.getElementById('detailClose');
+
+    const detailColorMap = {
+        education: { bg: 'rgba(221,160,221,0.12)', color: '#9b59b6', icon: 'graduation-cap', tag: 'Formacion Academica' },
+        experience: { bg: 'rgba(75,156,211,0.1)', color: '#1E4363', icon: 'briefcase', tag: 'Experiencia Profesional' },
+        certification: { bg: 'rgba(255,182,193,0.12)', color: '#d4607a', icon: 'award', tag: 'Certificacion' }
+    };
+
+    function openDetailModal(type, index) {
+        if (!siteData || !detailOverlay) return;
+        const items = type === 'education' ? siteData.education :
+                      type === 'experience' ? siteData.experience :
+                      siteData.certifications;
+        if (!items || !items[index]) return;
+        const item = items[index];
+        const config = detailColorMap[type] || detailColorMap.education;
+
+        const icon = document.getElementById('detailIcon');
+        const title = document.getElementById('detailTitle');
+        const subtitle = document.getElementById('detailSubtitle');
+        const period = document.getElementById('detailPeriod');
+        const body = document.getElementById('detailBody');
+        const tag = document.getElementById('detailTag');
+        const accentBar = detailModal.querySelector('.detail-accent-bar');
+
+        if (accentBar) accentBar.style.background = `linear-gradient(90deg, ${config.color}, var(--pastel-purple), ${config.color})`;
+        if (icon) {
+            icon.style.background = config.bg;
+            icon.style.color = config.color;
+            icon.innerHTML = `<i data-lucide="${config.icon}"></i>`;
+        }
+        if (type === 'education') {
+            if (title) title.textContent = item.degree || '';
+            if (subtitle) subtitle.textContent = item.institution || '';
+            if (period) period.textContent = item.year || '';
+        } else if (type === 'experience') {
+            if (title) title.textContent = item.role || '';
+            if (subtitle) subtitle.textContent = item.company || '';
+            if (period) period.textContent = item.period || '';
+        } else {
+            if (title) title.textContent = item.name || '';
+            if (subtitle) subtitle.textContent = item.institution || '';
+            if (period) period.textContent = item.year || '';
+        }
+        if (body) body.textContent = item.description || '';
+        if (tag) tag.textContent = config.tag;
+
+        detailOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeDetailModal() {
+        if (detailOverlay) detailOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-type]');
+        if (el) {
+            e.preventDefault();
+            openDetailModal(el.dataset.type, parseInt(el.dataset.index, 10));
+        }
+    });
+
+    if (detailClose) detailClose.addEventListener('click', closeDetailModal);
+    if (detailOverlay) detailOverlay.addEventListener('click', (e) => {
+        if (e.target === detailOverlay) closeDetailModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDetailModal();
+    });
 
     // Comment form
     const commentForm = document.getElementById('commentForm');
