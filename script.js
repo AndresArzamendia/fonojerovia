@@ -64,6 +64,25 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateActiveNav, { passive: true });
     updateActiveNav();
 
+    // Parallax orbs
+    const orbs = document.querySelectorAll('.orb');
+    if (orbs.length > 0) {
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    orbs.forEach((orb, i) => {
+                        const speed = 0.02 + (i * 0.008);
+                        orb.style.transform = `translateY(${scrollY * speed}px)`;
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
     // Mobile menu
     const mobileBtn = document.getElementById('mobileMenuBtn');
     const navLinks = document.getElementById('navLinks');
@@ -112,29 +131,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Generate floating shapes
     const shapesContainer = document.getElementById('shapesContainer');
     if (shapesContainer) {
-        const types = ['circle', 'square', 'star', 'triangle'];
-        const stars = ['★', '✦', '☆', '✧'];
-        for (let i = 0; i < 25; i++) {
-            const type = types[i % 4];
-            const el = document.createElement('div');
-            el.className = `shape shape-${type}`;
-            el.style.top = `${Math.random() * 95}%`;
-            el.style.left = `${Math.random() * 95}%`;
-            el.style.animationDuration = `${8 + Math.random() * 8}s`;
-            el.style.animationDelay = `${-Math.random() * 5}s`;
-            if (type === 'circle') {
-                const size = 50 + Math.random() * 50;
-                el.style.width = size + 'px';
-                el.style.height = size + 'px';
-            } else if (type === 'square') {
-                const size = 40 + Math.random() * 40;
-                el.style.width = size + 'px';
-                el.style.height = size + 'px';
-            } else if (type === 'star') {
-                el.textContent = stars[Math.floor(Math.random() * stars.length)];
+        const shapeTypes = [
+            { type: 'circle', count: 5 },
+            { type: 'square', count: 4 },
+            { type: 'heart', count: 3 },
+            { type: 'note', count: 3 },
+            { type: 'bubble', count: 3 },
+            { type: 'star', count: 3 },
+            { type: 'dots', count: 3 }
+        ];
+        const hearts = ['♥', '❤', '♡'];
+        const notes = ['♪', '♫', '♬'];
+        const stars = ['★', '✦', '✧', '☆'];
+
+        shapeTypes.forEach(({ type, count }) => {
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = `shape shape-${type}`;
+                el.style.top = `${5 + Math.random() * 85}%`;
+                el.style.left = `${3 + Math.random() * 90}%`;
+                el.style.animationDuration = `${12 + Math.random() * 14}s`;
+                el.style.animationDelay = `${-Math.random() * 8}s`;
+
+                if (type === 'circle') {
+                    const size = 40 + Math.random() * 60;
+                    el.style.width = size + 'px';
+                    el.style.height = size + 'px';
+                } else if (type === 'square') {
+                    const size = 30 + Math.random() * 50;
+                    el.style.width = size + 'px';
+                    el.style.height = size + 'px';
+                } else if (type === 'bubble') {
+                    const size = 0.7 + Math.random() * 0.6;
+                    el.style.transform = `scale(${size})`;
+                } else if (type === 'heart') {
+                    el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                } else if (type === 'note') {
+                    el.textContent = notes[Math.floor(Math.random() * notes.length)];
+                } else if (type === 'star') {
+                    el.textContent = stars[Math.floor(Math.random() * stars.length)];
+                }
+                shapesContainer.appendChild(el);
             }
-            shapesContainer.appendChild(el);
-        }
+        });
     }
 
     // Load data
