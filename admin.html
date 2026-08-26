@@ -55,6 +55,9 @@
                 <a href="#" class="nav-item" data-section="sec-photo">
                     <i data-lucide="camera"></i><span>Foto Principal</span>
                 </a>
+                <a href="#" class="nav-item" data-section="sec-biophotos">
+                    <i data-lucide="images"></i><span>Fotos Mi Historia</span>
+                </a>
                 <a href="#" class="nav-item" data-section="sec-education">
                     <i data-lucide="graduation-cap"></i><span>Formacion</span>
                 </a>
@@ -201,6 +204,21 @@
                             <p class="upload-hint">Formatos: JPG, PNG, WebP. Maximo 2MB recomendado.</p>
                         </div>
                     </div>
+                </section>
+
+                <!-- BIO PHOTOS -->
+                <section class="admin-section" id="sec-biophotos">
+                    <div class="section-header">
+                        <h2>Fotos de "Mi Historia"</h2>
+                        <p>Fotos que aparecen en el carrusel al expandir la tarjeta de Mi Historia. Se mostraran en el orden que aqui se defina.</p>
+                    </div>
+                    <div class="gallery-upload-area">
+                        <label class="upload-btn wide" for="bioPhotosInput">
+                            <i data-lucide="image-plus"></i> Agregar fotos
+                        </label>
+                        <input type="file" id="bioPhotosInput" accept="image/*" multiple class="hidden-input">
+                    </div>
+                    <div id="bioPhotosList" class="gallery-admin-grid"></div>
                 </section>
 
                 <!-- LOGO / IMAGES -->

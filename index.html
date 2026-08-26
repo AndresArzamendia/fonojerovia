@@ -97,9 +97,10 @@
     <section class="section section-anim" id="sobre-mi">
         <h2 class="section-title"><i data-lucide="user"></i> Sobre Mi</h2>
         <div class="about-grid">
-            <div class="bio-card">
+            <div class="bio-card" data-type="bio" data-index="0" style="cursor:pointer;">
                 <h3>Mi Historia</h3>
                 <p id="bioText">Soy una profesional apasionada por el desarrollo infantil y la salud auditiva.</p>
+                <span class="bio-read-more"><i data-lucide="maximize-2"></i> Ver historia completa</span>
             </div>
             <div class="stats-card">
                 <div class="stat-item">
@@ -413,6 +414,29 @@
             <div class="detail-body" id="detailBody"></div>
             <div class="detail-footer">
                 <span class="detail-tag" id="detailTag"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bio-overlay" id="bioOverlay">
+        <div class="bio-modal" id="bioModal">
+            <div class="bio-modal-accent"></div>
+            <button class="bio-modal-close" id="bioModalClose" aria-label="Cerrar">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="bio-carousel" id="bioCarousel">
+                <div class="bio-carousel-track" id="bioCarouselTrack"></div>
+                <button class="bio-carousel-btn bio-carousel-prev" id="bioPrev" aria-label="Anterior"><i data-lucide="chevron-left"></i></button>
+                <button class="bio-carousel-btn bio-carousel-next" id="bioNext" aria-label="Siguiente"><i data-lucide="chevron-right"></i></button>
+                <div class="bio-carousel-dots" id="bioCarouselDots"></div>
+            </div>
+            <div class="bio-modal-body">
+                <h3 class="bio-modal-title" id="bioModalTitle">Mi Historia</h3>
+                <div class="bio-modal-text" id="bioModalText"></div>
+                <div class="bio-modal-footer">
+                    <span class="bio-modal-tag"><i data-lucide="user"></i> Paola Torres</span>
+                    <span class="bio-modal-tag"><i data-lucide="stethoscope"></i> Fonoaudiologia</span>
+                </div>
             </div>
         </div>
     </div>

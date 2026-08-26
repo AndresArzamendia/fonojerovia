@@ -3338,6 +3338,392 @@ footer::before {
 }
 
 /* =========================================
+   BIO READ MORE HINT
+   ========================================= */
+.bio-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+.bio-read-more i, .bio-read-more svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+
+.bio-card:hover .bio-read-more {
+    opacity: 0.8;
+    transform: translateY(0);
+}
+
+.bio-card:hover .bio-read-more:hover {
+    color: var(--accent-dark);
+}
+
+.bio-card:hover .bio-read-more:hover i,
+.bio-card:hover .bio-read-more:hover svg {
+    transform: scale(1.2) rotate(-5deg);
+}
+
+/* =========================================
+   BIO MODAL — Carousel + Story
+   ========================================= */
+.bio-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 35, 55, 0.6);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.bio-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.bio-modal {
+    position: relative;
+    background: #ffffff;
+    border-radius: 28px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow:
+        0 32px 100px rgba(14, 35, 55, 0.3),
+        0 8px 32px rgba(75, 156, 211, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transform: scale(0.85) translateY(40px);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+
+.bio-overlay.open .bio-modal {
+    transform: scale(1) translateY(0);
+}
+
+.bio-modal-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    border-radius: 28px 28px 0 0;
+    background: linear-gradient(90deg, var(--accent-color), var(--pastel-purple), var(--pastel-green), var(--accent-color));
+    background-size: 300% 100%;
+    animation: bioAccentShimmer 4s ease infinite;
+    z-index: 2;
+}
+
+@keyframes bioAccentShimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+.bio-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    color: var(--accent-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.bio-modal-close:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 4px 16px rgba(220, 53, 69, 0.15);
+}
+
+.bio-modal-close i, .bio-modal-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ---------- CAROUSEL ---------- */
+.bio-carousel {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 28px 28px 0 0;
+    background: linear-gradient(135deg, #e8f4f8, #f0e6f6);
+}
+
+.bio-carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bio-carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.bio-carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: bioSlideZoom 8s ease-in-out infinite alternate;
+}
+
+@keyframes bioSlideZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.06); }
+}
+
+.bio-carousel-slide .slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem 1.5rem 1rem;
+    background: linear-gradient(to top, rgba(14, 35, 55, 0.65) 0%, transparent 100%);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.bio-carousel:hover .slide-caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bio-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    color: var(--accent-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bio-carousel:hover .bio-carousel-btn {
+    opacity: 1;
+}
+
+.bio-carousel-prev { left: 0.8rem; }
+.bio-carousel-next { right: 0.8rem; }
+
+.bio-carousel-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 18px rgba(75, 156, 211, 0.35);
+}
+
+.bio-carousel-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.bio-carousel-btn i, .bio-carousel-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.bio-carousel-dots {
+    position: absolute;
+    bottom: 0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.4rem;
+    z-index: 5;
+}
+
+.bio-carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.bio-carousel-dot.active {
+    background: #fff;
+    width: 24px;
+    border-radius: 10px;
+    border-color: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.bio-carousel-dot:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Carousel empty state */
+.bio-carousel-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text-muted);
+    gap: 0.8rem;
+}
+
+.bio-carousel-empty i, .bio-carousel-empty svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.3;
+}
+
+.bio-carousel-empty span {
+    font-size: 0.9rem;
+    opacity: 0.5;
+}
+
+/* ---------- MODAL BODY ---------- */
+.bio-modal-body {
+    padding: 1.8rem 2rem 2rem;
+}
+
+.bio-modal-title {
+    font-size: 1.5rem;
+    color: var(--accent-dark);
+    margin: 0 0 1rem;
+    animation: bioBodyIn 0.5s 0.15s both;
+}
+
+.bio-modal-text {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.85;
+    white-space: pre-line;
+    animation: bioBodyIn 0.5s 0.25s both;
+}
+
+.bio-modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    animation: bioBodyIn 0.5s 0.35s both;
+}
+
+.bio-modal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+    background: linear-gradient(135deg, rgba(75, 156, 211, 0.1), rgba(221, 160, 221, 0.08));
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+}
+
+.bio-modal-tag i, .bio-modal-tag svg {
+    width: 13px;
+    height: 13px;
+    color: var(--accent-color);
+}
+
+@keyframes bioBodyIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bio modal responsive */
+@media (max-width: 600px) {
+    .bio-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+    .bio-modal {
+        max-width: 100%;
+        border-radius: 24px 24px 0 0;
+        max-height: 95vh;
+        transform: scale(1) translateY(100%);
+    }
+    .bio-overlay.open .bio-modal {
+        transform: scale(1) translateY(0);
+    }
+    .bio-carousel {
+        aspect-ratio: 16 / 10;
+        border-radius: 24px 24px 0 0;
+    }
+    .bio-modal-body {
+        padding: 1.5rem 1.2rem 1.5rem;
+    }
+    .bio-modal-title {
+        font-size: 1.25rem;
+    }
+    .bio-modal-text {
+        font-size: 0.9rem;
+    }
+    .bio-carousel-btn {
+        opacity: 1;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 360px) {
+    .bio-modal-body {
+        padding: 1.2rem 1rem;
+    }
+    .bio-carousel {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+/* =========================================
    HERO — Visual Enhancements
    ========================================= */
 .hero-left .badge {
@@ -4186,6 +4572,12 @@ footer::before {
     .detail-accent-bar { animation: none; }
     .detail-icon { animation: none; opacity: 1; transform: none; }
     .detail-title, .detail-subtitle, .detail-period, .detail-body, .detail-footer { animation: none; opacity: 1; transform: none; }
+    .bio-overlay { transition: none; }
+    .bio-modal { transition: none; transform: none; }
+    .bio-overlay.open .bio-modal { transform: none; }
+    .bio-modal-accent { animation: none; }
+    .bio-modal-title, .bio-modal-text, .bio-modal-footer { animation: none; opacity: 1; transform: none; }
+    .bio-carousel-slide img { animation: none; }
 }
 
 /* =========================================

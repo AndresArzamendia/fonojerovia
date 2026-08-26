@@ -675,7 +675,135 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === detailOverlay) closeDetailModal();
     });
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeDetailModal();
+        if (e.key === 'Escape') {
+            closeDetailModal();
+            closeBioModal();
+        }
+    });
+
+    // =========================================
+    // BIO MODAL — Carousel + Story
+    // =========================================
+    const bioOverlay = document.getElementById('bioOverlay');
+    const bioModalClose = document.getElementById('bioModalClose');
+    const bioCarouselTrack = document.getElementById('bioCarouselTrack');
+    const bioCarouselDots = document.getElementById('bioCarouselDots');
+    const bioPrev = document.getElementById('bioPrev');
+    const bioNext = document.getElementById('bioNext');
+    const bioModalText = document.getElementById('bioModalText');
+    let bioCurrentSlide = 0;
+    let bioAutoTimer = null;
+    let bioTouchStartX = 0;
+
+    function renderBioCarousel() {
+        if (!bioCarouselTrack || !bioCarouselDots) return;
+        const photos = (siteData && siteData.bioPhotos) || [];
+        const profilePhoto = (siteData && siteData.personal && siteData.personal.photo) ? [{ src: siteData.personal.photo, caption: 'Paola Torres - Fonoaudiologa' }] : [];
+        const allPhotos = [...profilePhoto, ...photos];
+
+        if (allPhotos.length === 0) {
+            bioCarouselTrack.innerHTML = '<div class="bio-carousel-empty"><i data-lucide="image"></i><span>Sin fotos disponibles</span></div>';
+            bioCarouselDots.innerHTML = '';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            return;
+        }
+
+        bioCarouselTrack.innerHTML = allPhotos.map((p, i) => `
+            <div class="bio-carousel-slide">
+                <img src="${p.src}" alt="${p.caption || 'Foto ' + (i + 1)}" loading="lazy">
+                ${p.caption ? `<div class="slide-caption">${p.caption}</div>` : ''}
+            </div>
+        `).join('');
+
+        bioCarouselDots.innerHTML = allPhotos.map((_, i) => `
+            <button class="bio-carousel-dot${i === 0 ? ' active' : ''}" data-slide="${i}" aria-label="Slide ${i + 1}"></button>
+        `).join('');
+
+        bioCurrentSlide = 0;
+        updateBioSlide(false);
+    }
+
+    function updateBioSlide(animate = true) {
+        if (!bioCarouselTrack) return;
+        if (animate) {
+            bioCarouselTrack.style.transition = 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
+        } else {
+            bioCarouselTrack.style.transition = 'none';
+        }
+        bioCarouselTrack.style.transform = `translateX(-${bioCurrentSlide * 100}%)`;
+        bioCarouselDots.querySelectorAll('.bio-carousel-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === bioCurrentSlide);
+        });
+    }
+
+    function nextBioSlide() {
+        const total = bioCarouselTrack.querySelectorAll('.bio-carousel-slide').length;
+        if (total === 0) return;
+        bioCurrentSlide = (bioCurrentSlide + 1) % total;
+        updateBioSlide();
+    }
+
+    function prevBioSlide() {
+        const total = bioCarouselTrack.querySelectorAll('.bio-carousel-slide').length;
+        if (total === 0) return;
+        bioCurrentSlide = (bioCurrentSlide - 1 + total) % total;
+        updateBioSlide();
+    }
+
+    function startBioAutoPlay() {
+        stopBioAutoPlay();
+        bioAutoTimer = setInterval(nextBioSlide, 4500);
+    }
+
+    function stopBioAutoPlay() {
+        if (bioAutoTimer) { clearInterval(bioAutoTimer); bioAutoTimer = null; }
+    }
+
+    function openBioModal() {
+        if (!bioOverlay) return;
+        renderBioCarousel();
+        if (bioModalText) bioModalText.textContent = (siteData && siteData.personal && siteData.personal.bio) || '';
+        bioOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        startBioAutoPlay();
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeBioModal() {
+        if (bioOverlay) bioOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+        stopBioAutoPlay();
+    }
+
+    if (bioModalClose) bioModalClose.addEventListener('click', closeBioModal);
+    if (bioOverlay) bioOverlay.addEventListener('click', (e) => { if (e.target === bioOverlay) closeBioModal(); });
+    if (bioPrev) bioPrev.addEventListener('click', () => { prevBioSlide(); startBioAutoPlay(); });
+    if (bioNext) bioNext.addEventListener('click', () => { nextBioSlide(); startBioAutoPlay(); });
+
+    if (bioCarouselDots) {
+        bioCarouselDots.addEventListener('click', (e) => {
+            const dot = e.target.closest('.bio-carousel-dot');
+            if (dot) {
+                bioCurrentSlide = parseInt(dot.dataset.slide, 10);
+                updateBioSlide();
+                startBioAutoPlay();
+            }
+        });
+    }
+
+    if (bioCarouselTrack) {
+        bioCarouselTrack.addEventListener('touchstart', (e) => { bioTouchStartX = e.touches[0].clientX; stopBioAutoPlay(); }, { passive: true });
+        bioCarouselTrack.addEventListener('touchend', (e) => {
+            const diff = bioTouchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) { diff > 0 ? nextBioSlide() : prevBioSlide(); }
+            startBioAutoPlay();
+        }, { passive: true });
+    }
+
+    // Hook bio card click
+    document.addEventListener('click', (e) => {
+        const bioCard = e.target.closest('[data-type="bio"]');
+        if (bioCard) { e.preventDefault(); openBioModal(); }
     });
 
     // Comment form

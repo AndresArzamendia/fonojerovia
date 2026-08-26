@@ -446,6 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTestimonialsList();
         renderFaqList();
         renderGalleryList();
+        renderBioPhotosList();
     }
 
     // EDUCATION
@@ -863,6 +864,85 @@ document.addEventListener('DOMContentLoaded', () => {
     async function syncGalleryToCloud() {
         const result = await sbSave('gallery', siteData.gallery || []);
         updateSyncStatus(result);
+    }
+
+    // =========================================
+    // BIO PHOTOS
+    // =========================================
+    function renderBioPhotosList() {
+        const container = document.getElementById('bioPhotosList');
+        if (!container) return;
+        const items = siteData.bioPhotos || [];
+        if (items.length === 0) {
+            container.innerHTML = '<div class="gallery-empty-admin"><p>No hay fotos de "Mi Historia". Usa el boton de arriba para agregar.</p></div>';
+            return;
+        }
+        container.innerHTML = items.map((item, i) => `
+            <div class="gallery-admin-item" style="position:relative;">
+                <img src="${item.src}" alt="Foto ${i + 1}">
+                <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.7rem;padding:4px 6px;text-align:center;border-radius:0 0 8px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.caption || 'Foto ' + (i + 1)}</div>
+                <div style="position:absolute;top:4px;left:4px;display:flex;gap:3px;">
+                    ${i > 0 ? `<button class="delete-gallery-btn" onclick="moveBioPhoto(${i},-1)" title="Mover arriba" style="background:rgba(75,156,211,0.85);"><i data-lucide="chevron-up"></i></button>` : ''}
+                    ${i < items.length - 1 ? `<button class="delete-gallery-btn" onclick="moveBioPhoto(${i},1)" title="Mover abajo" style="background:rgba(75,156,211,0.85);"><i data-lucide="chevron-down"></i></button>` : ''}
+                </div>
+                <button class="delete-gallery-btn" onclick="deleteBioPhoto(${i})" title="Eliminar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+        `).join('');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    window.moveBioPhoto = function(index, direction) {
+        const items = siteData.bioPhotos || [];
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= items.length) return;
+        const temp = items[index];
+        items[index] = items[newIndex];
+        items[newIndex] = temp;
+        saveData();
+        renderBioPhotosList();
+        showToast('Orden actualizado', 'success');
+    };
+
+    window.deleteBioPhoto = function(index) {
+        if (!confirm('Eliminar esta foto?')) return;
+        siteData.bioPhotos.splice(index, 1);
+        saveData();
+        renderBioPhotosList();
+        showToast('Foto eliminada', 'success');
+    };
+
+    const bioPhotosInput = document.getElementById('bioPhotosInput');
+    if (bioPhotosInput) {
+        bioPhotosInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            if (!siteData.bioPhotos) siteData.bioPhotos = [];
+
+            showToast(`Comprimiendo ${files.length} foto(s)...`, 'success');
+            let processed = 0;
+            files.forEach(file => {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast(`"${file.name}" es muy grande. Maximo 5MB.`, 'error');
+                    processed++;
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = async (ev) => {
+                    const compressed = await sbCompressImage(ev.target.result, 800, 0.55);
+                    siteData.bioPhotos.push({ src: compressed, caption: '' });
+                    processed++;
+                    if (processed === files.length) {
+                        saveData();
+                        renderBioPhotosList();
+                        showToast(`${files.length} foto(s) agregada(s) a Mi Historia`, 'success');
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+            bioPhotosInput.value = '';
+        });
     }
 
     // =========================================
